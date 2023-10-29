@@ -1,5 +1,13 @@
-use mongodb::{Database, bson::{doc, Document}};
-use rocket::{get, routes, serde::json::{json, Value}, State, futures::StreamExt,};
+use mongodb::{
+    bson::{doc, Document},
+    Client,
+};
+use rocket::{
+    futures::StreamExt,
+    get, post, routes,
+    serde::json::{json, Value},
+    State,
+};
 
 #[get("/")]
 fn index() -> &'static str {
@@ -15,15 +23,35 @@ async fn get_projects(db: &State<mongodb::Database>) -> Value {
         match project {
             Ok(project) => projects.push(json!(project)),
             Err(e) => println!("Error: {}", e),
-        }        
+        }
     }
     json!(projects)
 }
 
+#[post("/api/v1/projects", data = "<project>")]
+async fn create_project(db: &State<mongodb::Database>, project: String) -> Value {
+    let collection: mongodb::Collection<Document> = db.collection("projects");
+    let project: Document = mongodb::bson::from_bson(mongodb::bson::Bson::String(project)).unwrap();
+    let result = collection.insert_one(project, None).await;
+    match result {
+        Ok(result) => json!(result),
+        Err(e) => json!(e.to_string()),
+    }
+}
+
+async fn db_connection() -> mongodb::Database {
+    Client::with_uri_str("mongodb+srv://kris007iron:vBaCsQhabPmfs47p@cluster0.httk5bz.mongodb.net/?retryWrites=true&w=majority").await.unwrap().database("PortfolioAPI")
+}
+
 #[shuttle_runtime::main]
-async fn main(#[shuttle_shared_db::MongoDb] db:Database) -> shuttle_rocket::ShuttleRocket {
+async fn main(/*#[shuttle_shared_db::MongoDb] db: Database*/) -> shuttle_rocket::ShuttleRocket {
     //vBaCsQhabPmfs47p for mongodb driver if shuttle shared db does not work or does not work on tests;
-    let rocket = rocket::build().manage(db).mount("/", routes![index]).mount("/", routes![get_projects]);
+    let db = db_connection().await;
+    let rocket = rocket::build()
+        .manage(db)
+        .mount("/", routes![index])
+        .mount("/", routes![get_projects])
+        .mount("/", routes![create_project]);
     Ok(rocket.into())
 }
 
