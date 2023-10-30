@@ -5,7 +5,7 @@ use mongodb::{
 use rocket::{
     futures::StreamExt,
     get, post, routes,
-    serde::json::{json, Value},
+    serde::json::{json, Json, Value},
     State,
 };
 
@@ -29,10 +29,10 @@ async fn get_projects(db: &State<mongodb::Database>) -> Value {
 }
 
 #[post("/api/v1/projects", data = "<project>")]
-async fn create_project(db: &State<mongodb::Database>, project: String) -> Value {
+async fn create_project(db: &State<mongodb::Database>, project: Json<Document>) -> Value {
     let collection: mongodb::Collection<Document> = db.collection("projects");
-    let project: Document = mongodb::bson::from_bson(mongodb::bson::Bson::String(project)).unwrap();
-    let result = collection.insert_one(project, None).await;
+    let project_to_ins: Document = project.into_inner();
+    let result = collection.insert_one(project_to_ins, None).await;
     match result {
         Ok(result) => json!(result),
         Err(e) => json!(e.to_string()),
