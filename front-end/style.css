@@ -2,17 +2,65 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #131316;
-    color: #ffffff;
+    background-color: black;
+    color: #EEEEEE;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
-section {
-    display: grid;
-    place-items: center;
-    align-content: center;
-    min-height: 120vh;
+section,
+header,
+footer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 400px;
+    padding-top: 150px;
+}
+
+.dark {
+    background-color: #393E46;
+}
+
+.black {
+    background-color: #222831;
+}
+
+.dblue {
+    background-color: #00ADB5;
+}
+
+.curvegr {
+    position: absolute;
+    height: 250px;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+}
+
+.curvegr::before {
+    content: '';
+    display: block;
+    position: absolute;
+    border-radius: 100% 50%;
+    width: 55%;
+    height: 100%;
+    transform: translate(85%, 60%);
+    background-color: #393E46;
+}
+
+.curvegr::after {
+    content: '';
+    display: block;
+    position: absolute;
+    border-radius: 100% 50%;
+    width: 55%;
+    height: 100%;
+    background-color: #222831;
+    transform: translate(-4%, 40%);
+    z-index: -1;
 }
 
 .hidden {
@@ -32,4 +80,70 @@ section {
     opacity: 1;
     filter: blur(0);
     transform: translateX(0);
+}
+
+.bubble::after {
+    content: '';
+    border-top-left-radius: 50% 100%;
+    border-top-right-radius: 50% 100%;
+    position: absolute;
+    bottom: 0;
+    height: 85%;
+    width: 100%;
+    background-color: #222831;
+    z-index: -1;
+}
+
+header .text {
+    position: relative;
+}
+
+.text.sec-text:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #222831;
+    border-left: 2px solid #EEEEEE;
+    animation: animate 4s steps(22) infinite;
+}
+
+.sec-text {
+    width: 100px;
+    overflow: hidden;
+}
+
+@keyframes animate {
+
+    40%,
+    60% {
+        left: calc(100% + 4px);
+    }
+
+    100% {
+        left: 0;
+    }
+
+}
+
+.wave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.wave svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 100px;
+}
+
+.wave .shape-fill {
+    fill: #222831;
 }
