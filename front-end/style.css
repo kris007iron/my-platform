@@ -107,7 +107,7 @@ header .text {
     width: 100%;
     background-color: #222831;
     border-left: 2px solid #EEEEEE;
-    animation: animate 4s steps(22) infinite;
+    animation: animate 4s steps(24) infinite;
 }
 
 .sec-text {
@@ -148,12 +148,28 @@ header .text {
     fill: #222831;
 }
 
+#projects {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 50px 0;
+}
+
 .project {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
     width: 80%;
     padding: 50px 0;
+    text-decoration: none;
+    color: #EEEEEE;
+}
+
+.project:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 .project .project-img {
@@ -177,15 +193,83 @@ header .text {
     border-radius: 10px;
 }
 
-.project .project-text img {
-    width: 50%;
-    /* height: 520px; */
-
-    object-fit: cover;
-    border-radius: 10px;
+.project .project-text .extras {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
 }
 
-.project .project-text a {
-    display: block;
-    z-index: 99;
+.project .project-text div a img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.project .project-text div a {
+    display: inline-block;
+    width: 15%;
+    padding-right: 10px;
+}
+
+.project .project-text div .tag {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 2px solid #00ADB5;
+    color: #EEEEEE;
+    font-size: 0.8rem;
+    text-decoration: none;
+
+}
+
+#posts {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    padding: 50px 0;
+}
+
+#posts .column {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    padding: 0 4px;
+}
+
+#posts .column .card {
+    display: inline-block;
+    width: 45%;
+    margin: 2.5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+#posts .column .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+#posts .column .card img {
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+}
+
+#posts .column .card h1 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 10px;
+}
+
+#posts .column .card p {
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 10px;
+}
+
+#posts .column .card a {
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 10px;
+    text-decoration: none;
+    color: #00ADB5;
 }
