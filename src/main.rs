@@ -3,11 +3,40 @@ use mongodb::{
     Client,
 };
 use rocket::{
+    fairing::{Fairing, Info, Kind},
     futures::StreamExt,
-    get, post, routes,
+    get,
+    http::{Header, Method, Status},
+    post, routes,
     serde::json::{json, Json, Value},
-    State,
+    Request, Response, State,
 };
+
+pub struct CORS;
+
+#[rocket::async_trait]
+impl Fairing for CORS {
+    fn info(&self) -> Info {
+        Info {
+            name: "Add CORS headers to responses",
+            kind: Kind::Response,
+        }
+    }
+
+    async fn on_response<'r>(&self, _request: &'r Request<'_>, response: &mut Response<'r>) {
+        response.set_header(Header::new("Access-Control-Allow-Origin", "*"));
+        response.set_header(Header::new(
+            "Access-Control-Allow-Methods",
+            "POST, GET, PATCH, OPTIONS",
+        ));
+        response.set_header(Header::new("Access-Control-Allow-Headers", "*"));
+        response.set_header(Header::new("Access-Control-Allow-Credentials", "true"));
+
+        if _request.method() == Method::Options {
+            response.set_status(Status::Ok);
+        }
+    }
+}
 
 #[get("/")]
 fn index() -> &'static str {
@@ -106,6 +135,7 @@ async fn main(/*#[shuttle_shared_db::MongoDb] db: Database*/) -> shuttle_rocket:
     let db = db_connection().await;
     let rocket = rocket::build()
         .manage(db)
+        .attach(CORS)
         .mount("/", routes![index])
         .mount("/", routes![get_projects])
         .mount("/", routes![create_project])

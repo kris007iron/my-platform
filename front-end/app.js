@@ -2,7 +2,7 @@ const observer = new IntersectionObserver(entries =>
 {
     entries.forEach((entry) =>
     {
-        console.log(entry);
+        // console.log(entry);
         if (entry.isIntersecting)
         {
             entry.target.classList.add('show');
@@ -47,3 +47,27 @@ const updateText = () =>
 };
 
 setInterval(updateText, 100); // Check every second for updates
+
+let data = get('http://localhost:8000/api/v1/projects');
+
+data.then((data) =>
+{
+    console.log(data[0]);
+    let projects = document.querySelector('#projects');
+    let projectsData = data;
+    projectsData.forEach((project) =>
+    {
+        projects.innerHTML += `
+        <div class="project">
+            <div class="project-img">
+                <img src="${project.images[0]}" alt="">
+            </div>
+            <div class="project-text">
+                <h3>${project.title}</h3>
+                <p>${project.description}</p>
+                <a href="${project.link}"><img src="imgs/githublogo.png"></a>
+            </div>
+        </div>
+        `;
+    });
+});
