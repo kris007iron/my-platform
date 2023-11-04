@@ -94,11 +94,16 @@ footer {
     z-index: -1;
 }
 
-header .text {
+header #text {
     position: relative;
+    color: #00ADB5;
 }
 
 #cursor {
+    border-right: 2px solid #EEE;
+}
+
+.blink {
     animation: blink 0.7s infinite;
 }
 
@@ -118,37 +123,6 @@ header .text {
     font-size: 24px;
     white-space: nowrap;
     overflow: hidden;
-    border-right: 2px solid #EEE;
-}
-
-.text.sec-text:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: #222831;
-    border-left: 2px solid #EEEEEE;
-    animation: animate 4s steps(24) infinite;
-}
-
-.sec-text {
-    width: 100px;
-    overflow: hidden;
-}
-
-@keyframes animate {
-
-    40%,
-    60% {
-        left: calc(100% + 4px);
-    }
-
-    100% {
-        left: 0;
-    }
-
 }
 
 .wave {
@@ -316,4 +290,49 @@ header .text {
     margin: 10px;
     text-decoration: none;
     color: #00ADB5;
+}
+
+.buttons-main {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: space-evenly;
+    width: 60%;
+    padding: 50px 0;
+}
+
+.buttons-main .hire-me {
+    background-color: #00ADB5;
+    color: #222831;
+    border: 2px solid #00ADB5;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.buttons-main .hire-me:hover {
+    background-color: #222831;
+    color: #00ADB5;
+}
+
+.buttons-main .contact-me {
+    background-color: #222831;
+    border: 2px solid #00ADB5;
+    color: #00ADB5;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.buttons-main .contact-me:hover {
+    background-color: #00ADB5;
+    color: #222831;
 }

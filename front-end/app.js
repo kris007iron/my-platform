@@ -32,20 +32,26 @@ let charIndex = 0;
 
 function typeText() {
     if (charIndex < textOptions[textIndex].length) {
+        //remove blink animation
+        cursorElement.classList.remove('blink');
         textElement.textContent += textOptions[textIndex][charIndex];
         charIndex++;
         setTimeout(typeText, 100); // Typing speed
     } else {
+        //add blink animation
+        cursorElement.classList.add('blink');
         setTimeout(eraseText, 1000); // Delay before erasing
     }
 }
 
 function eraseText() {
     if (charIndex > 0) {
+        cursorElement.classList.remove('blink');
         textElement.textContent = textOptions[textIndex].substring(0, charIndex - 1);
         charIndex--;
         setTimeout(eraseText, 50); // Erasing speed
     } else {
+        cursorElement.classList.add('blink');
         textIndex = (textIndex + 1) % textOptions.length; // Loop through the options
         setTimeout(typeText, 1000); // Delay before typing the next option
     }
