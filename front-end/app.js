@@ -2,6 +2,7 @@ const observer = new IntersectionObserver(entries => {
     entries.forEach((entry) => {
         // console.log(entry);
         if (entry.isIntersecting) {
+
             entry.target.classList.add('show');
         } else {
             entry.target.classList.remove('show');
@@ -9,8 +10,12 @@ const observer = new IntersectionObserver(entries => {
     });
 });
 const hiddenElements = document.querySelectorAll('.hidden');
+let i = 0;
 hiddenElements.forEach((element) => {
-    observer.observe(element);
+    setTimeout(() => {
+        observer.observe(element);
+    }, i == 1 ? 300 : 20);
+    i == 0 ? i++ : i--;
 });
 // get request to the server
 const get = (url) => {
@@ -19,26 +24,34 @@ const get = (url) => {
         .catch(error => console.log(error));
 };
 
-const text = document.querySelector('.sec-text');
-
-let lastUpdateTime = new Date();
-
-
 const textOptions = ['Freelancer', 'BackEndDev', 'Programmer'];
-let currentIndex = 1;
+const textElement = document.getElementById('text');
+const cursorElement = document.getElementById('cursor');
+let textIndex = 0;
+let charIndex = 0;
 
-const updateText = () => {
-    const currentTime = new Date();
-    const elapsedTime = currentTime - lastUpdateTime;
-
-    if (elapsedTime >= 4000) {
-        text.innerText = textOptions[currentIndex];
-        currentIndex = (currentIndex + 1) % textOptions.length;
-        lastUpdateTime = currentTime;
+function typeText() {
+    if (charIndex < textOptions[textIndex].length) {
+        textElement.textContent += textOptions[textIndex][charIndex];
+        charIndex++;
+        setTimeout(typeText, 100); // Typing speed
+    } else {
+        setTimeout(eraseText, 1000); // Delay before erasing
     }
-};
+}
 
-setInterval(updateText, 10); // Check every second for updates
+function eraseText() {
+    if (charIndex > 0) {
+        textElement.textContent = textOptions[textIndex].substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(eraseText, 50); // Erasing speed
+    } else {
+        textIndex = (textIndex + 1) % textOptions.length; // Loop through the options
+        setTimeout(typeText, 1000); // Delay before typing the next option
+    }
+}
+
+setTimeout(typeText, 1000); // Start typing after 1 second
 
 let data = get('http://localhost:8000/api/v1/projects');
 
