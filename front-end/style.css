@@ -168,10 +168,10 @@ header .text {
 }
 
 .wave .shape-fill {
-    fill: #00ADB5;
+    fill: #222831;
 }
 
-.custom-shape-divider-bottom-1699108335 {
+.wave-bottom {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -181,15 +181,14 @@ header .text {
     transform: rotate(180deg);
 }
 
-.custom-shape-divider-bottom-1699108335 svg {
+.wave-bottom svg {
     position: relative;
     display: block;
     width: calc(100% + 1.3px);
     height: 50px;
-    transform: rotateY(180deg);
 }
 
-.custom-shape-divider-bottom-1699108335 .shape-fill {
+.wave-bottom .shape-fill {
     fill: #00ADB5;
 }
 
