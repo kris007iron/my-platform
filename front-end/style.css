@@ -336,23 +336,3 @@ header #text {
     background-color: #00ADB5;
     color: #222831;
 }
-
-.contact {
-    width: 80%;
-    border-radius: 5px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #222831;
-    margin: 5px;
-}
-
-.contact .contact-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}

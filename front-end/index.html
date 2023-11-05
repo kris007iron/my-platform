@@ -75,30 +75,7 @@
     </section>
     <footer class="hidden dblue">
         <h2>It is that godly good?</h2>
-        <p>Then contact me</p>
-        <div class="contact">
-            <form class="contact-form" onsubmit="sendEmail(); reset(); return false;">
-                <!--  reset() return false; -->
-                <input type="text" id="name" placeholder="Your Name" required>
-                <input type="email" id="email" placeholder="Email" required>
-                <textarea name="message" id="message" rows="4" placeholder="How can I help you"></textarea>
-                <button type="submit">Send</button>
-            </form>
-        </div>
     </footer>
-    <script>
-        function sendEmail() {
-            Email.send({
-                SecureToken: "47801b61-9d6a-4a22-a743-79c8639106a9",
-                To: 'kris007.iron@gmail.com',
-                From: document.getElementById("email").value,
-                Subject: "New Contact from " + document.getElementById("name").value,
-                Body: document.getElementById("email").value + document.getElementById("message").value
-            }).then(
-                message => alert("mail sent successfully")
-            );
-        }
-    </script>
 </body>
 
 </html>
