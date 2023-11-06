@@ -9,6 +9,71 @@ body {
     overflow-x: hidden;
 }
 
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+nav .logo h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #EEEEEE;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+
+}
+
+nav .logo h4:hover {
+    color: #FFF;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+nav ul li {
+    list-style: none;
+}
+
+nav ul li a {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #EEEEEE;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+nav ul li a:hover {
+    display: block;
+    transform: scale(1.2);
+    color: #00ADB5;    
+}
+
+nav ul li a:focus {
+    outline: none;
+    background-color: #00ADB5;
+    color: #222831;
+}
+
+nav ul li a.active {
+    background-color: #00ADB5;
+    color: #222831;
+}
+
 section,
 header,
 footer {
