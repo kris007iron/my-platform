@@ -7,6 +7,7 @@
     <title>Document</title>
     <script defer src="app.js"></script>
     <script defer src="https://smtpjs.com/v3/smtp.js"></script>
+    <script defer src="https://kit.fontawesome.com/04615997f6.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -41,8 +42,15 @@
                     class="shape-fill"></path>
             </svg>
         </div>
-        <h2>You can find me on</h2>
-        <p>GitHub, Discord, LinkedIn and Fiverr</p>
+        <div class="content">
+            <h2>You can find me on</h2>
+            <div class="icons">
+                <div class="icona"><i class="fa-brands fa-linkedin fa-2xl" style="color: #eeeeee;"></i></div>
+                <div class="icona"><i class="fa-brands fa-github fa-2xl" style="color: #eeeeee;"></i></div>
+                <div class="icona"><i class="fa-brands fa-medium fa-2xl" style="color: #eeeeee;"></i></div>
+                <div class="icona"><i class="fa-brands fa-discord fa-2xl" style="color: #eeeeee;"></i></div>
+            </div>
+        </div>
         <div class="wave-bottom">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
                 preserveAspectRatio="none">
@@ -75,6 +83,14 @@
     </section>
     <footer class="hidden dblue">
         <h2>It is that godly good?</h2>
+        <p>Then contact me</p>
+        <div class="contact">
+            <form class="contact-form" action="https://formspree.io/f/xoqobnrl" method="POST">
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <textarea name="message" placeholder="Message" required></textarea>
+                <button type="submit">Send</button>
+            </form>
     </footer>
 </body>
 

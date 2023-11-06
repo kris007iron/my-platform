@@ -125,6 +125,11 @@ header #text {
     overflow: hidden;
 }
 
+.content {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
 .wave {
     position: absolute;
     top: 0;
@@ -258,8 +263,8 @@ header #text {
 
 #posts .column .card {
     display: inline-block;
-    width: 45%;
-    margin: 2.5%;
+    width: 32%;
+    margin: 1%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -335,4 +340,99 @@ header #text {
 .buttons-main .contact-me:hover {
     background-color: #00ADB5;
     color: #222831;
+}
+
+.contact {
+    width: 80%;
+    border-radius: 5px;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #222831;
+    margin: 5px;
+}
+
+.contact .contact-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact .contact-form input,
+.contact .contact-form textarea {
+    width: 80%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 2px solid #00ADB5;
+    background-color: #222831;
+    color: #EEEEEE;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.contact .contact-form input:focus,
+.contact .contact-form textarea:focus {
+    outline: none;
+    border: 2px solid #00ADB5;
+}
+
+.contact .contact-form input::placeholder,
+.contact .contact-form textarea::placeholder {
+    color: #EEEEEE;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.contact .contact-form button[type="submit"] {
+    width: 40%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 2px solid #00ADB5;
+    background-color: #00ADB5;
+    color: #222831;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.contact .contact-form button[type="submit"]:hover {
+    background-color: #222831;
+    color: #00ADB5;
+}
+
+.contact .contact-form button[type="submit"]:focus {
+    outline: none;
+    border: 2px solid #00ADB5;
+}
+
+.contact .contact-form textarea {
+    height: 200px;
+}
+
+.icons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.icona {
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.icona:hover {
+    transform: scale(1.2);
 }
