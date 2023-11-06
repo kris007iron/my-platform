@@ -9,6 +9,10 @@ body {
     overflow-x: hidden;
 }
 
+section {
+    text-align: center;
+}
+
 nav {
     position: fixed;
     top: 0;
@@ -60,7 +64,7 @@ nav ul li a {
 nav ul li a:hover {
     display: block;
     transform: scale(1.2);
-    color: #00ADB5;    
+    color: #00ADB5;
 }
 
 nav ul li a:focus {
