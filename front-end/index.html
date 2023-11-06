@@ -23,11 +23,11 @@
                 <!-- hire me button -->
                 <a href="https://www.fiverr.com/kris007_iron" class="hire-me">Hire me</a>
                 <!-- contact me -->
-                <button class="contact-me">Contact me</button>
+                <a class="contact-me" href="#emailform">Contact me</a>
             </div>
         </div>
     </header>
-    <section class="hidden dark" style="z-index: -1;">
+    <section class="hidden dark">
         <div class="wave">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
                 preserveAspectRatio="none">
@@ -45,10 +45,26 @@
         <div class="content">
             <h2>You can find me on</h2>
             <div class="icons">
-                <div class="icona"><i class="fa-brands fa-linkedin fa-2xl" style="color: #eeeeee;"></i></div>
-                <div class="icona"><i class="fa-brands fa-github fa-2xl" style="color: #eeeeee;"></i></div>
-                <div class="icona"><i class="fa-brands fa-medium fa-2xl" style="color: #eeeeee;"></i></div>
-                <div class="icona"><i class="fa-brands fa-discord fa-2xl" style="color: #eeeeee;"></i></div>
+                <div class="icona">
+                    <a href="https://www.linkedin.com/in/krzysztof-mrugała">
+                        <i class="fa-brands fa-linkedin fa-2xl" style="color: #eeeeee;"></i>
+                    </a>
+                </div>
+                <div class="icona">
+                    <a href="https://github.com/kris007iron">
+                        <i class="fa-brands fa-github fa-2xl" style="color: #eeeeee;"></i>
+                    </a>
+                </div>
+                <div class="icona">
+                    <a href="https://medium.com/@kris007.iron">
+                        <i class="fa-brands fa-medium fa-2xl" style="color: #eeeeee;"></i>
+                    </a>
+                </div>
+                <div class="icona">
+                    <a href="https://discordapp.com/users/527546582334439425">
+                        <i class="fa-brands fa-discord fa-2xl" style="color: #eeeeee;"></i>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="wave-bottom">
@@ -86,8 +102,8 @@
         <p>Then contact me</p>
         <div class="contact">
             <form class="contact-form" action="https://formspree.io/f/xoqobnrl" method="POST">
+                <input id="emailform" type="email" name="email" placeholder="Email" required>
                 <input type="text" name="name" placeholder="Name" required>
-                <input type="email" name="email" placeholder="Email" required>
                 <textarea name="message" placeholder="Message" required></textarea>
                 <button type="submit">Send</button>
             </form>

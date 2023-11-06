@@ -433,6 +433,8 @@ header #text {
     transition: all 0.3s ease-in-out;
 }
 
+
+
 .icona:hover {
     transform: scale(1.2);
 }
