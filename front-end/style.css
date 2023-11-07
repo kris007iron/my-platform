@@ -268,8 +268,19 @@ header #text {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     width: 100%;
     padding: 50px 0;
+    height: fit-content;
+}
+
+#projects-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
 }
 
 .project {
@@ -281,6 +292,7 @@ header #text {
     padding: 50px 0;
     text-decoration: none;
     color: #EEEEEE;
+    margin: 5px;
 }
 
 .project:hover {
@@ -528,7 +540,7 @@ header #text {
 .blob-motion {
     position: absolute;
     top: -155px;
-    left: 1%;
+    align-items: center;
     transform: scale(0.7);
     z-index: -1;
 }

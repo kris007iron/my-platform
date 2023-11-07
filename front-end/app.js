@@ -99,7 +99,7 @@ let data = get('http://localhost:8000/api/v1/projects');
 data.then((data) =>
 {
     console.log(data[0]);
-    let projects = document.querySelector('#projects');
+    let projects = document.querySelector('#projects-inner');
     let projectsData = data;
     projectsData.forEach((project) =>
     {
