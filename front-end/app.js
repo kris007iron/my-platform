@@ -1,24 +1,52 @@
-const observer = new IntersectionObserver(entries => {
-    entries.forEach((entry) => {
+ones = [];
+let hiddenElements = document.querySelectorAll('.hidden');
+const observer = new IntersectionObserver(entries =>
+{
+    entries.forEach((entry) =>
+    {
         // console.log(entry);
-        if (entry.isIntersecting) {
-
+        if (entry.isIntersecting)
+        {
             entry.target.classList.add('show');
-        } else {
+
+            if (entry.target.classList.contains('one') && !ones.includes(entry.target))
+            {
+                ones.push(entry.target);
+                if (ones.length == 3)
+                {
+                    setTimeout(() =>
+                    {
+                        entry.target.parentElement.classList.add('hidden');
+                        entry.target.parentElement.classList.add('show');
+                        observer.observe(entry.target.parentElement);
+                        hiddenElements = document.querySelectorAll('.hidden');
+                        for (let i = 0; i < ones.length; i++)
+                        {
+                            ones[i].classList.remove('hidden');
+                            //hiddenElements.delete(ones[i]);
+                            observer.unobserve(ones[i]);
+                        }
+                    }, 1000);
+                }
+            }
+        } else
+        {
             entry.target.classList.remove('show');
         }
     });
 });
-const hiddenElements = document.querySelectorAll('.hidden');
 let i = 0;
-hiddenElements.forEach((element) => {
-    setTimeout(() => {
+hiddenElements.forEach((element) =>
+{
+    setTimeout(() =>
+    {
         observer.observe(element);
     }, i == 1 ? 300 : 20);
     i == 0 ? i++ : i--;
 });
 // get request to the server
-const get = (url) => {
+const get = (url) =>
+{
     return fetch(url)
         .then(response => response.json())
         .catch(error => console.log(error));
@@ -30,27 +58,33 @@ const cursorElement = document.getElementById('cursor');
 let textIndex = 0;
 let charIndex = 0;
 
-function typeText() {
-    if (charIndex < textOptions[textIndex].length) {
+function typeText()
+{
+    if (charIndex < textOptions[textIndex].length)
+    {
         //remove blink animation
         cursorElement.classList.remove('blink');
         textElement.textContent += textOptions[textIndex][charIndex];
         charIndex++;
         setTimeout(typeText, 100); // Typing speed
-    } else {
+    } else
+    {
         //add blink animation
         cursorElement.classList.add('blink');
         setTimeout(eraseText, 1000); // Delay before erasing
     }
 }
 
-function eraseText() {
-    if (charIndex > 0) {
+function eraseText()
+{
+    if (charIndex > 0)
+    {
         cursorElement.classList.remove('blink');
         textElement.textContent = textOptions[textIndex].substring(0, charIndex - 1);
         charIndex--;
         setTimeout(eraseText, 50); // Erasing speed
-    } else {
+    } else
+    {
         cursorElement.classList.add('blink');
         textIndex = (textIndex + 1) % textOptions.length; // Loop through the options
         setTimeout(typeText, 1000); // Delay before typing the next option
@@ -61,13 +95,16 @@ setTimeout(typeText, 1000); // Start typing after 1 second
 
 let data = get('http://localhost:8000/api/v1/projects');
 
-data.then((data) => {
+data.then((data) =>
+{
     console.log(data[0]);
     let projects = document.querySelector('#projects');
     let projectsData = data;
-    projectsData.forEach((project) => {
+    projectsData.forEach((project) =>
+    {
         let tagsHTML = '';
-        for (let i = 0; i < project.tags.length; i++) {
+        for (let i = 0; i < project.tags.length; i++)
+        {
             tagsHTML += `<span class="tag">${project.tags[i]}</span>`;
         }
         projects.innerHTML += `        
@@ -87,9 +124,12 @@ data.then((data) => {
     });
 });
 let blogs_medium;
-renderBlogs = (blogs) => {
-    if (blogs.items) {
-        return blogs.items.map(post => {
+renderBlogs = (blogs) =>
+{
+    if (blogs.items)
+    {
+        return blogs.items.map(post =>
+        {
             return `<div class="column">
                 <div class="card">
                     <img src=${post.thumbnail} class="Img" />
@@ -103,7 +143,8 @@ renderBlogs = (blogs) => {
 }
 fetch('https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@kris007.iron')
     .then(resp => resp.json())
-    .then(blogs => {
+    .then(blogs =>
+    {
         blogs_medium = blogs;
         let blogsDiv = document.querySelector('#posts');
         blogsDiv.innerHTML = renderBlogs(blogs_medium);

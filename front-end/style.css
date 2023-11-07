@@ -89,6 +89,24 @@ footer {
     padding-top: 100px;
 }
 
+#first-three>:nth-child(2) {
+    min-height: 0;
+    height: 275px;
+    padding-top: 20px;
+}
+
+#first-three>:nth-child(1) {
+    min-height: 0;
+    height: 300px;
+    padding-top: 50px;
+}
+
+#first-three>:nth-child(3) {
+    min-height: 0;
+    height: 275px;
+    padding-top: 20px;
+}
+
 .dark {
     background-color: #393E46;
 }
@@ -372,7 +390,7 @@ header #text {
     align-items: left;
     justify-content: space-evenly;
     width: 60%;
-    padding: 50px 0;
+    padding: 20px 0;
 }
 
 .buttons-main .hire-me {
