@@ -27,6 +27,7 @@ const observer = new IntersectionObserver(entries =>
                             observer.unobserve(ones[i]);
                         }
                     }, 1000);
+
                 }
             }
         } else

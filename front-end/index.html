@@ -8,6 +8,7 @@
     <script defer src="app.js"></script>
     <script defer src="https://smtpjs.com/v3/smtp.js"></script>
     <script defer src="https://kit.fontawesome.com/04615997f6.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/kute.js@2.2.4/dist/kute.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -113,10 +114,43 @@
             </div>
         </section>
     </div>
-    <section class="hidden dark bubble" id="projectstitle">
+    <section class="hidden dark" id="projectstitle" style="height: 300px;">
         <h2>This is work of mine</h2>
+        <svg class="blob-motion" id="visual" viewBox="0 0 900 600" width="900" height="600"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+            <g transform="translate(392.04041570792623 328.9036525377027)">
+                <path id="bubble1"
+                    d="M165 -160.5C215 -115 257.5 -57.5 264 6.5C270.5 70.5 240.9 140.9 190.9 166.1C140.9 191.3 70.5 171.1 11.8 159.4C-46.9 147.6 -93.8 144.1 -118.8 119C-143.8 93.8 -146.9 46.9 -148.4 -1.5C-150 -50 -149.9 -99.9 -124.9 -145.4C-99.9 -190.9 -50 -232 3.8 -235.7C57.5 -239.5 115 -206 165 -160.5"
+                    fill="#222831"></path>
+            </g>
+
+            <g transform="translate(420.04605869695735 256.66972409451876)" style="visibility: hidden;">
+                <path id="bubble2"
+                    d="M159.4 -136.7C207.1 -111.7 246.5 -55.9 241.7 -4.8C236.9 46.2 187.7 92.4 140.1 142.4C92.4 192.4 46.2 246.2 5.1 241.1C-36.1 236.1 -72.1 172.1 -108.1 122.1C-144.1 72.1 -180.1 36.1 -182.1 -2C-184.1 -40.1 -152.1 -80.1 -116.1 -105.1C-80.1 -130.1 -40.1 -140.1 7.9 -148C55.9 -155.9 111.7 -161.7 159.4 -136.7"
+                    fill="#222831"></path>
+            </g>
+        </svg>
+
+        <script>
+            const tween = KUTE.fromTo(
+                '#bubble1',
+                { path: '#bubble1' },
+                { path: '#bubble2' },
+                { repeat: 999, duration: 3000, yoyo: true }
+            )
+
+            tween.start()
+        </script>
     </section>
     <section class="hidden black" id="projects">
+        <div class="custom-shape-divider-bottom-1699387380">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                preserveAspectRatio="none">
+                <path
+                    d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                    class="shape-fill"></path>
+            </svg>
+        </div>
     </section>
     <section class="hidden black" id="poststitle">
         <h2>This are posts of mine</h2>
