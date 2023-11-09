@@ -356,6 +356,7 @@ header #text {
     justify-content: space-around;
     width: 100%;
     padding: 50px 0;
+    height: fit-content;
 }
 
 #posts .column {
@@ -399,6 +400,10 @@ header #text {
     margin: 10px;
     text-decoration: none;
     color: #00ADB5;
+}
+
+#poststitle {
+    height: fit-content;
 }
 
 .buttons-main {

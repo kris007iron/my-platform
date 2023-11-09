@@ -95,6 +95,10 @@ function eraseText()
 setTimeout(typeText, 1000); // Start typing after 1 second
 
 let data = get('http://localhost:8000/api/v1/projects');
+if (data == undefined)
+{
+    data = get('https://kris007iron.shuttle.rs/api/v1/projects');
+}
 
 data.then((data) =>
 {
@@ -129,24 +133,32 @@ renderBlogs = (blogs) =>
 {
     if (blogs.items)
     {
-        return blogs.items.map(post =>
+        const columns = [];
+        for (let i = 0; i < blogs.items.length; i += 3)
         {
-            return `<div class="column">
-                <div class="card">
+            const columnContent = blogs.items.slice(i, i + 3).map(post =>
+            {
+                return `<div class="card">
                     <img src=${post.thumbnail} class="Img" />
                     <h1 class="cardHeader">${post.title}</h1>
                     <p class="cardText">Posted on: ${post.pubDate}</p>
                     <a href=${post.link} class="Link"> Read the Full Blog Here!</a>
-                </div>
-            </div>`;
-        })
+                </div>`;
+            });
+
+            columns.push(`<div class="column">${columnContent.join('')}</div>`);
+        }
+
+        return columns.join('');
     }
 }
+
 fetch('https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@kris007.iron')
     .then(resp => resp.json())
     .then(blogs =>
     {
         blogs_medium = blogs;
+        // blogs_medium.items.push(blogs_medium.items[0]);
         let blogsDiv = document.querySelector('#posts');
         blogsDiv.innerHTML = renderBlogs(blogs_medium);
     });

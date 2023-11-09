@@ -1,9 +1,12 @@
+use std::{io, path::PathBuf};
+
 use mongodb::{
     bson::{doc, oid::ObjectId, Document},
     Client,
 };
 use rocket::{
     fairing::{Fairing, Info, Kind},
+    fs::NamedFile,
     futures::StreamExt,
     get,
     http::{Header, Method, Status},
@@ -36,11 +39,6 @@ impl Fairing for CORS {
             response.set_status(Status::Ok);
         }
     }
-}
-
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
 }
 
 #[get("/api/v1/projects")]
@@ -130,6 +128,22 @@ async fn db_connection() -> mongodb::Database {
     Client::with_uri_str("mongodb+srv://kris007iron:vBaCsQhabPmfs47p@cluster0.httk5bz.mongodb.net/?retryWrites=true&w=majority").await.unwrap().database("PortfolioAPI")
 }
 
+#[get("/<file..>")]
+async fn files(file: PathBuf) -> Option<NamedFile> {
+    let project_path = std::env::current_dir().unwrap();
+    //get build path inside src
+    let build_path = project_path.join("src/front-end");
+    NamedFile::open(build_path.join(file)).await.ok()
+}
+
+#[get("/")]
+async fn index() -> io::Result<NamedFile> {
+    let project_path = std::env::current_dir().unwrap();
+    //get build path inside src
+    let build_path = project_path.join("src/front-end");
+    NamedFile::open(build_path.join("index.html")).await
+}
+
 #[shuttle_runtime::main]
 async fn main(/*#[shuttle_shared_db::MongoDb] db: Database*/) -> shuttle_rocket::ShuttleRocket {
     //vBaCsQhabPmfs47p for mongodb driver if shuttle shared db does not work or does not work on tests;
@@ -138,6 +152,7 @@ async fn main(/*#[shuttle_shared_db::MongoDb] db: Database*/) -> shuttle_rocket:
         .manage(db)
         .attach(CORS)
         .mount("/", routes![index])
+        .mount("/", routes![files])
         .mount("/", routes![get_projects]);
     // .mount("/", routes![create_project])
     // .mount("/", routes![get_project])
