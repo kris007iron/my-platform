@@ -125,6 +125,7 @@ async fn get_project(db: &State<mongodb::Database>, id: String) -> Value {
 // }
 
 async fn db_connection() -> mongodb::Database {
+    //TODO: move this to env variables
     Client::with_uri_str("mongodb+srv://kris007iron:vBaCsQhabPmfs47p@cluster0.httk5bz.mongodb.net/?retryWrites=true&w=majority").await.unwrap().database("PortfolioAPI")
 }
 
