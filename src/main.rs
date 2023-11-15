@@ -10,7 +10,6 @@ use rocket::{
     futures::StreamExt,
     get,
     http::{Header, Method, Status},
-    response::status::BadRequest,
     /*post,*/ routes,
     serde::json::{json, /*Json,*/ Value},
     Request, Response, State,
@@ -126,9 +125,8 @@ async fn get_project(db: &State<mongodb::Database>, id: String) -> Value {
 //     }
 // }
 
-async fn db_connection(conn: String) -> mongodb::Database {
-    //TODO: move this to env variables
-    Client::with_uri_str(conn)
+async fn db_connection(client: &str) -> mongodb::Database {
+    Client::with_uri_str(client)
         .await
         .unwrap()
         .database("PortfolioAPI")
@@ -159,8 +157,9 @@ async fn main(
     } else {
         panic!("No secret found for MY_API_KEY");
     };
+    let client = secret.as_str();
     //vBaCsQhabPmfs47p for mongodb driver if shuttle shared db does not work or does not work on tests;
-    let db = db_connection(secret).await;
+    let db = db_connection(client).await;
     let rocket = rocket::build()
         .manage(db)
         .attach(CORS)
