@@ -94,10 +94,10 @@ function eraseText()
 
 setTimeout(typeText, 1000); // Start typing after 1 second
 
-let data = get('http://localhost:8000/api/v1/projects');
+let data = get('https://kris007iron.shuttle.rs/api/v1/projects');
 if (data == undefined)
 {
-    data = get('https://kris007iron.shuttle.rs/api/v1/projects');
+    data = get('http://localhost:8000/api/v1/projects');
 }
 
 data.then((data) =>

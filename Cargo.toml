@@ -5,9 +5,10 @@ edition = "2021"
 
 [dependencies]
 mongodb = "2.7.0"
-rocket = { version = "0.5.0-rc.3", features = ["json"]}
+rocket = { version = "0.5.0-rc.4", features = ["json"]}
 rocket_dyn_templates = { version = "0.1.0-rc.3", features = ["tera"]}
-shuttle-rocket = "0.30.0"
-shuttle-runtime = "0.30.0"
+shuttle-rocket = "0.32.0"
+shuttle-runtime = "0.32.0"
+shuttle-secrets = "0.32.0"
 shuttle-shared-db = { version = "0.30.1", features=["mongodb"]}
 tokio = "1.26.0"

@@ -1,5 +1,5 @@
 use std::{io, path::PathBuf};
-
+extern crate rocket;
 use mongodb::{
     bson::{doc, oid::ObjectId, Document},
     Client,
@@ -10,10 +10,12 @@ use rocket::{
     futures::StreamExt,
     get,
     http::{Header, Method, Status},
+    response::status::BadRequest,
     /*post,*/ routes,
     serde::json::{json, /*Json,*/ Value},
     Request, Response, State,
 };
+use shuttle_secrets::SecretStore;
 
 pub struct CORS;
 
@@ -124,9 +126,12 @@ async fn get_project(db: &State<mongodb::Database>, id: String) -> Value {
 //     }
 // }
 
-async fn db_connection() -> mongodb::Database {
+async fn db_connection(conn: String) -> mongodb::Database {
     //TODO: move this to env variables
-    Client::with_uri_str("mongodb+srv://kris007iron:vBaCsQhabPmfs47p@cluster0.httk5bz.mongodb.net/?retryWrites=true&w=majority").await.unwrap().database("PortfolioAPI")
+    Client::with_uri_str(conn)
+        .await
+        .unwrap()
+        .database("PortfolioAPI")
 }
 
 #[get("/<file..>")]
@@ -146,9 +151,16 @@ async fn index() -> io::Result<NamedFile> {
 }
 
 #[shuttle_runtime::main]
-async fn main(/*#[shuttle_shared_db::MongoDb] db: Database*/) -> shuttle_rocket::ShuttleRocket {
+async fn main(
+    #[shuttle_secrets::Secrets] secret_store: SecretStore,
+) -> shuttle_rocket::ShuttleRocket {
+    let secret = if let Some(secret) = secret_store.get("MONGO_STR") {
+        secret
+    } else {
+        panic!("No secret found for MY_API_KEY");
+    };
     //vBaCsQhabPmfs47p for mongodb driver if shuttle shared db does not work or does not work on tests;
-    let db = db_connection().await;
+    let db = db_connection(secret).await;
     let rocket = rocket::build()
         .manage(db)
         .attach(CORS)
