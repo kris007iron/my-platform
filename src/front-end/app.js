@@ -101,7 +101,7 @@ let data;
 // {
 //     console.log(e);
 // }
-data = get('http://localhost:8000/api/v1/projects');
+data = get('https://kris007iron.shuttle.rs/api/v1/projects');
 
 data.then((data) =>
 {
