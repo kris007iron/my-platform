@@ -1,33 +1,29 @@
-ones = [];
 let hiddenElements = document.querySelectorAll('.hidden');
 const observer = new IntersectionObserver(entries =>
 {
-    entries.forEach((entry) =>
+    entries.forEach(entry =>
     {
-        // console.log(entry);
         if (entry.isIntersecting)
         {
             entry.target.classList.add('show');
 
-            if (entry.target.classList.contains('one') && !ones.includes(entry.target))
+            if (entry.target.classList.contains('one') && !entry.target.classList.contains('shown'))
             {
-                ones.push(entry.target);
-                if (ones.length == 3)
+                entry.target.classList.add('shown');
+                if (document.querySelectorAll('.one.shown').length === 3)
                 {
                     setTimeout(() =>
                     {
-                        entry.target.parentElement.classList.add('hidden');
-                        entry.target.parentElement.classList.add('show');
-                        observer.observe(entry.target.parentElement);
+                        const parent = entry.target.parentElement;
+                        parent.classList.add('hidden', 'show');
+                        observer.observe(parent);
                         hiddenElements = document.querySelectorAll('.hidden');
-                        for (let i = 0; i < ones.length; i++)
+                        document.querySelectorAll('.one.shown').forEach(el =>
                         {
-                            ones[i].classList.remove('hidden');
-                            //hiddenElements.delete(ones[i]);
-                            observer.unobserve(ones[i]);
-                        }
+                            el.classList.remove('hidden');
+                            observer.unobserve(el);
+                        });
                     }, 1000);
-
                 }
             }
         } else
@@ -36,99 +32,83 @@ const observer = new IntersectionObserver(entries =>
         }
     });
 });
-let i = 0;
-hiddenElements.forEach((element) =>
+
+hiddenElements.forEach((element, index) =>
 {
     setTimeout(() =>
     {
         observer.observe(element);
-    }, i == 1 ? 300 : 20);
-    i == 0 ? i++ : i--;
+    }, index === 1 ? 300 : 20);
 });
-// get request to the server
-const get = (url) =>
+
+// Improved typing animation using async/await
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+const typeText = async () =>
 {
-    return fetch(url)
-        .then(response => response.json())
-        .catch(error => console.log(error));
+    const textOptions = ['Freelancer', 'BackEndDev', 'Programmer'];
+    const textElement = document.getElementById('text');
+    const cursorElement = document.getElementById('cursor');
+
+    for (let textIndex = 0; ; textIndex = (textIndex + 1) % textOptions.length)
+    {
+        cursorElement.classList.remove('blink');
+        let charIndex = 0;
+        while (charIndex < textOptions[textIndex].length)
+        {
+            textElement.textContent += textOptions[textIndex][charIndex];
+            charIndex++;
+            await sleep(100); // Typing speed
+        }
+
+        cursorElement.classList.add('blink');
+        await sleep(1000); // Delay before erasing
+
+        while (charIndex > 0)
+        {
+            cursorElement.classList.remove('blink');
+            textElement.textContent = textOptions[textIndex].substring(0, charIndex - 1);
+            charIndex--;
+            await sleep(50); // Erasing speed
+        }
+
+        cursorElement.classList.add('blink');
+        await sleep(1000); // Delay before typing the next option
+    }
 };
 
-const textOptions = ['Freelancer', 'BackEndDev', 'Programmer'];
-const textElement = document.getElementById('text');
-const cursorElement = document.getElementById('cursor');
-let textIndex = 0;
-let charIndex = 0;
+typeText(); // Start typing
 
-function typeText()
-{
-    if (charIndex < textOptions[textIndex].length)
-    {
-        //remove blink animation
-        cursorElement.classList.remove('blink');
-        textElement.textContent += textOptions[textIndex][charIndex];
-        charIndex++;
-        setTimeout(typeText, 100); // Typing speed
-    } else
-    {
-        //add blink animation
-        cursorElement.classList.add('blink');
-        setTimeout(eraseText, 1000); // Delay before erasing
-    }
-}
-
-function eraseText()
-{
-    if (charIndex > 0)
-    {
-        cursorElement.classList.remove('blink');
-        textElement.textContent = textOptions[textIndex].substring(0, charIndex - 1);
-        charIndex--;
-        setTimeout(eraseText, 50); // Erasing speed
-    } else
-    {
-        cursorElement.classList.add('blink');
-        textIndex = (textIndex + 1) % textOptions.length; // Loop through the options
-        setTimeout(typeText, 1000); // Delay before typing the next option
-    }
-}
-
-setTimeout(typeText, 1000); // Start typing after 1 second
-let data;
-// try
-// {
-//     data = get('https://kris007iron.shuttle.rs/api/v1/projects');
-// } catch (e)
-// {
-//     console.log(e);
-// }
-data = get('https://kris007iron.shuttleapp.rs/api/v1/projects');
+let data = fetch('https://kris007iron.shuttleapp.rs/api/v1/projects');
 
 data.then((data) =>
 {
-    console.log(data[0]);
-    let projects = document.querySelector('#projects-inner');
-    let projectsData = data;
-    projectsData.forEach((project) =>
+    data.json().then((data) =>
     {
-        let tagsHTML = '';
-        for (let i = 0; i < project.tags.length; i++)
+        let projects = document.querySelector('#projects-inner');
+        let projectsData = data;
+        projectsData.forEach((project) =>
         {
-            tagsHTML += `<span class="tag">${project.tags[i]}</span>`;
-        }
-        projects.innerHTML += `        
-        <a class="project" href="${project.link}">
-        <div class="project-img">
-            <img src="${project.images[0]}" alt="">
-        </div>
-        <div class="project-text">
-            <h3>${project.title}</h3>
-            <p>${project.description}</p>
-            <div class="extras">
-            ${tagsHTML}
-            </div>                
-            </div>            
-        </a>
-        `;
+            let tagsHTML = '';
+            for (let i = 0; i < project.tags.length; i++)
+            {
+                tagsHTML += `<span class="tag">${project.tags[i]}</span>`;
+            }
+            projects.innerHTML += `        
+            <a class="project" href="${project.link}">
+            <div class="project-img">
+                <img src="${project.images[0]}" alt="">
+            </div>
+            <div class="project-text">
+                <h3>${project.title}</h3>
+                <p>${project.description}</p>
+                <div class="extras">
+                ${tagsHTML}
+                </div>                
+                </div>            
+            </a>
+            `;
+        });
     });
 });
 let blogs_medium;
