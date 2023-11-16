@@ -96,19 +96,19 @@ footer {
 
 #first-three>:nth-child(2) {
     min-height: 0;
-    height: 275px;
+    height: 375px;
     padding-top: 20px;
 }
 
 #first-three>:nth-child(1) {
     min-height: 0;
-    height: 300px;
+    height: 400px;
     padding-top: 50px;
 }
 
 #first-three>:nth-child(3) {
     min-height: 0;
-    height: 305px;
+    height: 375px;
     padding-top: 20px;
 }
 
