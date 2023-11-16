@@ -108,7 +108,7 @@ footer {
 
 #first-three>:nth-child(3) {
     min-height: 0;
-    height: 300px;
+    height: 305px;
     padding-top: 20px;
 }
 
@@ -573,4 +573,10 @@ header #text {
 
 .custom-shape-divider-bottom-1699387380 .shape-fill {
     fill: #222831;
+}
+
+@media (max-width: 768px) {
+    .project .project-img {
+        display: none;
+    }
 }
