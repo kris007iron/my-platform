@@ -167,7 +167,7 @@ data.then((data) => {
 
 ## Additional Configurations
 
-- **MongoDB Connection String**: Open `main.rs` and replace the placeholder in the `db_connection` function with your MongoDB connection string.
+- **MongoDB Connection String**: Open `main.rs` and replace the placeholder in the `db_connection` function with your MongoDB connection string or create `.env` file with it like I have done.
 
 - **CORS Configuration**: The CORS headers are configured in `cors.rs`. Update the "Access-Control-Allow-Origin" header with the origin of your frontend.
 
