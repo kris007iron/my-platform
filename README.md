@@ -173,8 +173,10 @@ data.then((data) => {
 
 - **Data Fetching in app.js**: Update the URL in the `fetch` function to match the endpoint of your backend.
 
+-  **Handling email form endpoint**: Remember to update this field to get emails from people who will contact you.
+
 ## Conclusion
 
-Feel free to explore and modify the code to suit your needs. If you have any feedback or suggestions, please leave a comment and share it with your fellow programmers.
+Feel free to explore and modify the code to suit your needs. If you have any feedback or suggestions, please comment and share them with your fellow programmers.
 
 Happy coding! 🚀
