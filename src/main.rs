@@ -2,7 +2,7 @@ use std::{io, path::PathBuf};
 extern crate rocket;
 use mongodb::{bson::doc, Client};
 use rocket::{fs::NamedFile, get, routes};
-use shuttle_secrets::SecretStore;
+use shuttle_runtime::SecretStore;
 
 mod cors;
 mod routes;
@@ -30,7 +30,7 @@ async fn index() -> io::Result<NamedFile> {
 
 #[shuttle_runtime::main]
 async fn main(
-    #[shuttle_secrets::Secrets] secret_store: SecretStore,
+    #[shuttle_runtime::Secrets] secret_store: SecretStore,
 ) -> shuttle_rocket::ShuttleRocket {
     let secret = get_mongo_secret(secret_store);
     let client = secret.as_str();
