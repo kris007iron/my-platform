@@ -13,6 +13,7 @@
     </router-link>  
     <div class="flex-grow"></div>  
     <div class="flex space-x-4 justify-self-end">
+      <router-link to="/projects" class="text-primary font-bold text-lg px-4">Projects</router-link>
       <router-link to="/about" class="text-primary font-bold text-lg px-4">About</router-link>
       <router-link to="/contact" class="text-primary font-bold text-lg px-4">Contact</router-link>
     </div>
