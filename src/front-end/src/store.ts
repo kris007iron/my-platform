@@ -41,15 +41,15 @@ export const useStore = defineStore('store', () => {
     ])
 
     const tags = ref([
-        "rust",
-        "surrealdb",
-        "api",
-        "backend",
-        ".NET",
-        "JavaScript",
-        "HTML",
-        "CSS",
-        "PostgreSQL"
+        { name: "rust", classes: ['fab', 'rust'] },
+        { name: "surrealdb", classes: "fa-solid fa-database" },
+        { name: "api", classes: "fa-solid fa-plug" },
+        { name: "backend", classes: "fa-solid fa-server" },
+        { name: ".NET", classes: "fa-brands fa-microsoft" },
+        { name: "JavaScript", classes: "fa-brands fa-js" },
+        { name: "HTML", classes: "fa-brands fa-html5" },
+        { name: "CSS", classes: "fa-brands fa-css3-alt" },
+        { name: "PostgreSQL", classes: "fa-solid fa-database" }
     ])
 
     const getProjects = computed(() => projects.value)
