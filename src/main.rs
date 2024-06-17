@@ -40,6 +40,7 @@ async fn main(
         .attach(cors::cors::CORS)
         .mount("/", routes![index])
         .mount("/", routes![files])
+        .mount("/", routes![routes::posts::get_posts])
         .mount("/", routes![routes::projects::get_projects]);
     // .mount("/", routes![get_project])
     // .mount("/", routes![get_posts])

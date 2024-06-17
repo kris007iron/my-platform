@@ -1,0 +1,20 @@
+[
+    {
+        "thumbnail": "./imgs/posts/online-project.webp",
+        "title": "My first fully online project",
+        "pubDate": "Oct 29, 2023",
+        "link": "https://medium.com/@kris007.iron/my-first-fully-online-project-38243f824928"
+    },
+    {
+        "thumbnail": "./imgs/posts/frontend-for-backend.webp",
+        "title": "Journey to Creating a Frontend for My Backend: A Self-Taught Adventure",
+        "pubDate": "Nov 20, 2023",
+        "link": "https://medium.com/@kris007.iron/journey-to-creating-a-frontend-for-my-backend-a-self-taught-adventure-f368f9176e50"
+    },
+    {
+        "thumbnail": "./imgs/llm-comparison-platform.webp",
+        "title": "LLModels Comparison Platform",
+        "pubDate": "Dec 20, 2023",
+        "link": "https://medium.com/@kris007.iron/llmodels-comparison-platform-5382c69790cf"
+    }
+]
