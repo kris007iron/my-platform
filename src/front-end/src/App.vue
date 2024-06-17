@@ -17,7 +17,7 @@
       <router-link to="/about" class="text-primary font-bold text-lg px-4">About</router-link>
       <router-link to="/contact" class="text-primary font-bold text-lg px-4">Contact</router-link>
     </div>
-</nav>
+  </nav>
 
   </header>
   <RouterView />
