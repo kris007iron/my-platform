@@ -4,10 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+jsonwebtoken = "9.3.0"
 mongodb = "2.7.0"
-rocket = { version = "0.5.0-rc.4", features = ["json"]}
+serde = {version = "1.0", features = ["derive"] }
+rocket = { version = "0.5.1", features = ["json"]}
 rocket_dyn_templates = { version = "0.1.0-rc.3", features = ["tera"]}
-shuttle-rocket = "0.45.0"
-shuttle-runtime = "0.45.0"
+shuttle-rocket = "0.46.0"
+shuttle-runtime = "0.46.0"
 shuttle-shared-db = { version = "0.45.0", features=["mongodb"]}
 tokio = "1.26.0"
+chrono = "0.4.38"
+anyhow = "1.0.86"

@@ -79,9 +79,9 @@ const typeText = async () =>
 
 typeText(); // Start typing
 
-let url = 'http://localhost:8000/api/v1/projects';
+let url = 'http://localhost:8000/api/v1';
 
-let data = fetch(url);//'https://kris007iron.shuttleapp.rs/api/v1/projects'
+let data = fetch(url + "/projects");//'https://kris007iron.shuttleapp.rs/api/v1/'
 
 data.then((data) =>
 {
@@ -113,26 +113,7 @@ data.then((data) =>
         });
     });
 });
-let blogs_medium = [
-    {
-        "thumbnail": "./imgs/posts/online-project.webp",
-        "title": "My first fully online project",
-        "pubDate": "Oct 29, 2023",
-        "link": "https://medium.com/@kris007.iron/my-first-fully-online-project-38243f824928"
-    },
-    {
-        "thumbnail": "./imgs/posts/frontend-for-backend.webp",
-        "title": "Journey to Creating a Frontend for My Backend: A Self-Taught Adventure",
-        "pubDate": "Nov 20, 2023",
-        "link": "https://medium.com/@kris007.iron/journey-to-creating-a-frontend-for-my-backend-a-self-taught-adventure-f368f9176e50"
-    },
-    {
-        "thumbnail": "./imgs/posts/llm-comparison-platform.webp",
-        "title": "LLModels Comparison Platform",
-        "pubDate": "Dec 20, 2023",
-        "link": "https://medium.com/@kris007.iron/llmodels-comparison-platform-5382c69790cf"
-    }
-];
+let blogs_medium;
 renderBlogs = (blogs) =>
 {
     console.log('blogs');
@@ -159,13 +140,13 @@ renderBlogs = (blogs) =>
 }
 
 
-document.querySelector('#posts').innerHTML = renderBlogs({ "items": blogs_medium });
-// fetch('https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@kris007.iron/')
-//     .then(resp => resp.json())
-//     .then(blogs =>
-//     {
-//         blogs_medium = blogs;
-//         // blogs_medium.items.push(blogs_medium.items[0]);
-//         let blogsDiv = document.querySelector('#posts');
-//         blogsDiv.innerHTML = renderBlogs(blogs_medium);
-//     });
+//document.querySelector('#posts').innerHTML = renderBlogs({ "items": blogs_medium });
+fetch(url + '/posts')
+    .then(resp => resp.json())
+    .then(blogs =>
+    {
+        blogs_medium = blogs;
+        // blogs_medium.items.push(blogs_medium.items[0]);
+        let blogsDiv = document.querySelector('#posts');
+        blogsDiv.innerHTML = renderBlogs({ "items": blogs_medium });
+    });
