@@ -22,6 +22,8 @@ struct AuthenticatedUser {
 
 struct MyState {
     jwt_token: Vec<u8>,
+    username: String,
+    hashed_password: Vec<u8>,
 }
 
 #[rocket::async_trait]
@@ -114,7 +116,20 @@ async fn main(
         .context("secret not found")?
         .as_bytes()
         .to_vec();
-    let state = MyState { jwt_token };
+    let hashed_password: Vec<u8> = secret_store
+        .get("USER_PASSWORD_HSH")
+        .context("hash not found")?
+        .as_bytes()
+        .to_vec();
+    let username: String = secret_store
+        .get("USER_NAME")
+        .context("username not found")?
+        .to_string();
+    let state = MyState {
+        jwt_token,
+        username,
+        hashed_password,
+    };
     let client = secret.as_str();
     let db = db_connection(client).await;
     let rocket = rocket::build()
@@ -125,8 +140,8 @@ async fn main(
         .mount("/", routes![files])
         .mount("/", routes![routes::posts::get_posts])
         .mount("/", routes![routes::projects::get_projects]);
-        //.mount("/", routes![submit])
-        //.mount("/", routes![login]);
+    //.mount("/", routes![submit])
+    //.mount("/", routes![login]);
     // .mount("/", routes![get_project])
     // .mount("/", routes![get_posts])
     // .mount("/", routes![create_post])
