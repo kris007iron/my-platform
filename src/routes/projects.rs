@@ -46,7 +46,7 @@ pub async fn create_project(
     let collection: mongodb::Collection<Document> = db.collection("projects");
     let mut image: Vec<String> = Vec::new();
     let project_path = std::env::current_dir().unwrap();
-    let persist_to_path = project_path.join("src\\front-end\\imgs\\projects\\");
+    let persist_to_path = project_path.join("src/front-end/imgs/projects/");
     info!("{:?}", persist_to_path);
     upload.image.persist_to(&persist_to_path).await.unwrap();
     image.push(upload.image.path().unwrap().to_str().unwrap().to_string());
