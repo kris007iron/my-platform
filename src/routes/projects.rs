@@ -1,4 +1,7 @@
 extern crate rocket;
+use std::fs;
+use std::path::Path;
+
 use crate::AuthenticatedUser;
 use mongodb::bson::{doc, Document};
 use rocket::http::Status;
@@ -40,6 +43,7 @@ pub async fn get_projects(db: &State<mongodb::Database>) -> Value {
     json!(projects)
 }
 
+//TODO: test this route
 #[post("/api/v1/projects", data = "<upload>")]
 pub async fn create_project(
     db: &State<mongodb::Database>,
@@ -48,34 +52,76 @@ pub async fn create_project(
 ) -> Result<Json<Value>, Custom<Json<Value>>> {
     let collection: mongodb::Collection<Document> = db.collection("projects");
     let mut image: Vec<String> = Vec::new();
+
+    // Get current directory and create target path
     let project_path = std::env::current_dir().map_err(|e| {
-        (Custom(
+        Custom(
             Status::InternalServerError,
-            Json(json!({"error": e.to_string()})),
-        ));
-    });
-    let persist_to_path = project_path.unwrap().join("src/front-end/imgs/projects/");
+            Json(json!({"error": format!("Failed to retrieve current directory: {}", e)})),
+        )
+    })?;
+    let persist_to_path = project_path.join("src/front-end/imgs/projects/");
     info!("{:?}", persist_to_path);
-    if let Err(e) = upload.image.persist_to(&persist_to_path).await {
+
+    // Ensure directory exists
+    if let Err(e) = fs::create_dir_all(&persist_to_path) {
         return Err(Custom(
             Status::InternalServerError,
-            Json(json!({"error": e.to_string()})),
+            Json(json!({"error": format!("Failed to create directory: {}", e)})),
         ));
     }
-    let image_path = upload.image.path().ok_or_else(|| {
+
+    // Persist the image
+    let temp_path = upload.image.path().ok_or_else(|| {
         Custom(
             Status::InternalServerError,
             Json(json!({"error": "Image path not found"})),
         )
-    });
-    let image_path = image_path.unwrap();
-    image.push(image_path.to_str().unwrap().to_string());
-    Ok(Json(json!({
-        "title": upload.title.clone(),
-        "description": upload.description.clone(),
-        "link": upload.link.clone(),
-        "image": image,
-        "tags": upload.tags.clone(),
-        "user": user.username,
-    })))
+    })?;
+
+    // Extract file name and extension
+    let filename = upload.image.name().ok_or_else(|| {
+        Custom(
+            Status::InternalServerError,
+            Json(json!({"error": "Failed to get image name"})),
+        )
+    })?;
+    let extension = Path::new(&filename)
+        .extension()
+        .and_then(|ext| ext.to_str())
+        .unwrap_or("");
+
+    // Create destination path with the same extension
+    let destination = persist_to_path.join(format!("{}.{}", filename, extension));
+
+    // Attempt to copy the file
+    fs::copy(&temp_path, &destination).map_err(|e| {
+        Custom(
+            Status::InternalServerError,
+            Json(json!({"error": format!("Failed to copy file: {}", e)})),
+        )
+    })?;
+
+    // Remove the temporary file
+    fs::remove_file(&temp_path).map_err(|e| {
+        Custom(
+            Status::InternalServerError,
+            Json(json!({"error": format!("Failed to remove temp file: {}", e)})),
+        )
+    })?;
+
+    // Convert the image path to a string
+    let image_str = destination.to_str().ok_or_else(|| {
+        Custom(
+            Status::InternalServerError,
+            Json(json!({"error": "Failed to convert image path to string"})),
+        )
+    })?;
+
+    image.push(image_str.to_string());
+
+    // Assuming further operations and database interactions are successful
+    // Here you might want to insert a new document into the database
+
+    Ok(Json(json!({ "status": image[0] })))
 }
