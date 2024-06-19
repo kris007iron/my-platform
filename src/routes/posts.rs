@@ -1,8 +1,9 @@
 extern crate rocket;
+use crate::AuthenticatedUser;
 use mongodb::bson::{doc, Document};
 use rocket::{
     futures::StreamExt,
-    get,
+    get, post,
     serde::json::{json, Value},
     State,
 };
@@ -19,4 +20,9 @@ pub async fn get_posts(db: &State<mongodb::Database>) -> Value {
         }
     }
     json!(posts)
+}
+
+#[post("/api/v1/posts")]
+pub fn create_post(db: &State<mongodb::Database>, user: AuthenticatedUser) -> Value {
+    json!({"status": "ok"})
 }

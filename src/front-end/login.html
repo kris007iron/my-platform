@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Panel</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: black;
+            color: #EEEEEE;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .login-panel {
+            background-color: #222831;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 350px;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-panel h2 {
+            margin-bottom: 20px;
+            color: #00ADB5;
+        }
+
+        .login-panel input {
+            width: 90%;
+            display: block;
+            padding: 10px;
+            margin: 10px auto;
+            border: 2px solid #00ADB5;
+            border-radius: 5px;
+            background-color: #393E46;
+            color: #EEEEEE;
+            font-size: 1rem;
+        }
+
+        .login-panel input:focus {
+            outline: none;
+            border-color: #00ADB5;
+        }
+
+        .login-panel button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #00ADB5;
+            border: none;
+            border-radius: 5px;
+            color: #222831;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hidden-form button {
+            width: 80%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #00ADB5;
+            border: none;
+            border-radius: 5px;
+            color: #222831;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .login-panel button:hover,
+        .hidden-form button:hover {
+            background-color: #EEEEEE;
+            color: #222831;
+        }
+
+        .hidden-form {
+            display: none;
+            margin-top: 50px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .hidden-form label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: 600;
+        }
+
+        .hidden-form input,
+        .hidden-form select {
+            width: 80%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 2px solid #00ADB5;
+            border-radius: 5px;
+            background-color: #393E46;
+            color: #EEEEEE;
+            font-size: 1rem;
+        }
+
+        .hidden-form input:focus,
+        .hidden-form select:focus {
+            outline: none;
+            border-color: #00ADB5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-panel" id="login-panel">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="hash()">Login</button>
+    </div>
+
+    <div class="hidden-form" id="projects-form">
+        <label for="projects-form-title">Tytuł</label>
+        <input type="text" name="title" id="projects-form-title">
+        <label for="projects-form-description">Opis</label>
+        <input type="text" name="description" id="projects-form-description">
+        <label for="projects-form-link">Link</label>
+        <input type="url" name="link" id="projects-form-link">
+        <label for="projects-form-images">Obrazek</label>
+        <input type="file" name="images" accept="image/*" id="projects-form-images">
+        <label for="projects-form-tags">Tagi(tag, tag)</label>
+        <input type="text" name="tags" id="projects-form-tags">
+        <button type="submit" onclick="addProject()">Dodaj projekt</button>
+    </div>
+
+    <div class="hidden-form" id="posts-form">
+        <label for="posts-form-title">Tytuł</label>
+        <input type="text" name="title" id="posts-form-title">
+        <label for="posts-form-pubDate">Data publikacji (MMM DD, YYYY)</label>
+        <input type="text" name="pubDate" id="posts-form-pubDate">
+        <label for="posts-form-link">Link</label>
+        <input type="url" name="link" id="posts-form-link">
+        <label for="posts-form-thumbnail">Obrazek</label>
+        <input type="file" name="thumbnail" accept="image/*" id="posts-form-thumbnail">
+        <button type="submit">Dodaj post</button>
+    </div>
+
+    <script src="loginS.js"></script>
+</body>
+
+</html>

@@ -2,14 +2,14 @@ use std::{io, path::PathBuf};
 extern crate rocket;
 
 use anyhow::Context;
+
 use mongodb::{bson::doc, Client};
 use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome, Request};
-use rocket::serde::json::Json;
-use rocket::{fs::NamedFile, get, post, routes, State};
+use rocket::{fs::NamedFile, get, routes};
 use serde::Deserialize;
 use shuttle_runtime::SecretStore;
-use utils::jwt::{create_token, verify_token, Claims};
+use utils::jwt::verify_token;
 
 mod cors;
 mod routes;
@@ -61,36 +61,6 @@ async fn db_connection(client: &str) -> mongodb::Database {
         .database("PortfolioAPI")
 }
 
-/*Routes for testing
-
-#[derive(Deserialize)]
-struct InputData {
-    name: String,
-    age: u32,
-}
-
-#[post("/submit", data = "<input_data>")]
-fn submit(input_data: Json<InputData>, user: AuthenticatedUser) -> String {
-    format!(
-        "Received data from user: {}. Name: {}, Age: {}",
-        user.username, input_data.name, input_data.age
-    )
-}
-
-// Generate JWT for testing purposes
-#[post("/login", data = "<user>")]
-async fn login(
-    user: Json<AuthenticatedUser>,
-    state: &State<MyState>,
-) -> Result<Json<String>, Status> {
-    match create_token(&user.username, &state.jwt_token) {
-        Ok(token) => Ok(Json(token)),
-        Err(_) => Err(Status::InternalServerError),
-    }
-}
-
-End of routes for testing*/
-
 // TODO: when developing SPA in vue add regex to let builtin router handle the routes
 #[get("/<file..>")]
 async fn files(file: PathBuf) -> Option<NamedFile> {
@@ -104,6 +74,13 @@ async fn index() -> io::Result<NamedFile> {
     let project_path = std::env::current_dir().unwrap();
     let build_path = project_path.join("src/front-end");
     NamedFile::open(build_path.join("index.html")).await
+}
+
+#[get("/login")]
+async fn login_s() -> io::Result<NamedFile> {
+    let project_path = std::env::current_dir().unwrap();
+    let build_path = project_path.join("src/front-end");
+    NamedFile::open(build_path.join("login.html")).await
 }
 
 #[shuttle_runtime::main]
@@ -138,7 +115,11 @@ async fn main(
         .attach(cors::cors::CORS)
         .mount("/", routes![index])
         .mount("/", routes![files])
+        .mount("/", routes![login_s])
+        .mount("/", routes![routes::admin::login])
         .mount("/", routes![routes::posts::get_posts])
+        .mount("/", routes![routes::posts::create_post])
+        .mount("/", routes![routes::projects::create_project])
         .mount("/", routes![routes::projects::get_projects]);
     //.mount("/", routes![submit])
     //.mount("/", routes![login]);
