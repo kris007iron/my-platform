@@ -96,7 +96,7 @@ async function addPost()
     const postThumbnail = document.getElementById('posts-form-thumbnail').files[0];
 
     formData.append('title', postTitle);
-    formData.append('pubDate', postPubDate);
+    formData.append('pub_date', postPubDate);
     formData.append('link', postLink);
     formData.append('thumbnail', postThumbnail);
 

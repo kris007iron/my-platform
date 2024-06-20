@@ -46,7 +46,7 @@ pub async fn get_projects(db: &State<mongodb::Database>) -> Value {
 pub async fn create_project(
     db: &State<mongodb::Database>,
     upload: Form<Upload<'_>>,
-    user: AuthenticatedUser,
+    _user: AuthenticatedUser,
 ) -> Result<Json<Value>, Custom<Json<Value>>> {
     let collection: mongodb::Collection<Document> = db.collection("projects");
     let mut images: Vec<String> = Vec::new();

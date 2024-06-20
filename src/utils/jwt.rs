@@ -14,7 +14,7 @@ pub fn create_token(username: &str, secret_key: &[u8]) -> Result<String, Error> 
     let expiration = Utc::now() + Duration::minutes(5);
     let my_claims = Claims {
         username: username.to_owned(),
-        exp: expiration.timestamp() as usize, //for testing purposes only 1 minute
+        exp: expiration.timestamp() as usize, //for testing purposes only 5 minute
     };
     encode(
         &Header::default(),

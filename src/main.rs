@@ -17,7 +17,7 @@ mod utils;
 
 #[derive(Debug, Deserialize)]
 struct AuthenticatedUser {
-    username: String,
+    _username: String,
 }
 
 struct MyState {
@@ -44,7 +44,7 @@ impl<'r> FromRequest<'r> for AuthenticatedUser {
                 // Use `state.jwt_token` here if needed for token verification
                 match verify_token(token, &state.jwt_token) {
                     Ok(data) => Outcome::Success(AuthenticatedUser {
-                        username: data.claims.username,
+                        _username: data.claims.username,
                     }),
                     Err(_) => Outcome::Error((Status::Unauthorized, ())),
                 }
