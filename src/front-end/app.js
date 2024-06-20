@@ -79,8 +79,8 @@ const typeText = async () =>
 
 typeText(); // Start typing
 
-//let url = 'http://localhost:8000/api/v1';
-let url = 'https://kris007iron.shuttleapp.rs/api/v1';
+let url = 'http://localhost:8000/api/v1';
+//let url = 'https://kris007iron.shuttleapp.rs/api/v1';
 let data = fetch(url + "/projects");//'https://kris007iron.shuttleapp.rs/api/v1/'
 
 data.then((data) =>
