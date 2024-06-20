@@ -1,4 +1,5 @@
 use crate::{utils::jwt::create_token, MyState};
+use bcrypt::verify;
 use rocket::serde::json::{json, Value};
 use rocket::{http::Status, serde::json::Json};
 use rocket::{post, response::status::Custom, State};
@@ -22,7 +23,7 @@ pub async fn login(
         ));
     }
 
-    if user.hashed_password.as_bytes() != state.hashed_password {
+    if verify(&user.hashed_password, &state.hashed_password).unwrap() != true {
         return Err(Custom(
             Status::Unauthorized,
             Json(json!({"error": "Incorrect password"})),

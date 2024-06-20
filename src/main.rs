@@ -23,7 +23,7 @@ struct AuthenticatedUser {
 struct MyState {
     jwt_token: Vec<u8>,
     username: String,
-    hashed_password: Vec<u8>,
+    hashed_password: String,
 }
 
 #[rocket::async_trait]
@@ -93,11 +93,10 @@ async fn main(
         .context("secret not found")?
         .as_bytes()
         .to_vec();
-    let hashed_password: Vec<u8> = secret_store
+    let hashed_password: String = secret_store
         .get("USER_PASSWORD_HSH")
         .context("hash not found")?
-        .as_bytes()
-        .to_vec();
+        .to_string();
     let username: String = secret_store
         .get("USER_NAME")
         .context("username not found")?
