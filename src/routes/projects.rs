@@ -16,9 +16,6 @@ use rocket::{
 use sanitize_filename::sanitize;
 use std::fs;
 
-#[path = "../utils/jwt.rs"]
-mod jwt;
-
 #[derive(FromForm)]
 pub struct Upload<'r> {
     title: String,
