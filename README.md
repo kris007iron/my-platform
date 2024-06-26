@@ -2,13 +2,13 @@
 
 This repository contains the code for my portfolio, showcasing my skills as a backend developer. The frontend is created using vanilla JavaScript, with additional styling and animations using CSS. The backend is built with Rust using the Rocket framework and MongoDB for data storage.
 
-## Project Structure
+## Project Structure(src)
 
 ```plaintext
 │   cors.rs
 │   main.rs
 │   routes.rs
-│
+│   utils.rs
 ├───cors
 │       cors.rs
 │
@@ -21,7 +21,11 @@ This repository contains the code for my portfolio, showcasing my skills as a ba
 │           githublogo.png
 │
 └───routes
-        projects.rs
+|       projects.rs
+|       posts.rs
+|       admin.rs
+└───utils
+        jwt.rs
 ```
 
 - **cors.rs**: Contains the CORS (Cross-Origin Resource Sharing) implementation for adding headers to responses.
@@ -43,6 +47,8 @@ This repository contains the code for my portfolio, showcasing my skills as a ba
 - **routes**: Contains route-specific Rust files.
 
   - **projects.rs**: Rust code defining routes related to projects.
+  - **posts.rs**: Rust code defining routes related to posts.
+  - **admin.rs**: Rust code defining routes related to admin panel login.
 
 ## Getting Started
 
@@ -52,9 +58,9 @@ This repository contains the code for my portfolio, showcasing my skills as a ba
    git clone https://github.com/your-username/my-portfolio.git
    ```
 
-2. Configure MongoDB connection string:
+2. Configure secrets connection string:
 
-   - Open `main.rs` and replace the placeholder in the `db_connection` function with your MongoDB connection string.
+   - Open `Secrets.txt` change the extension to `.toml` and replace the placeholders with yours.
 
 3. Install dependencies:
 
@@ -166,8 +172,6 @@ data.then((data) => {
 ```
 
 ## Additional Configurations
-
-- **MongoDB Connection String**: Open `main.rs` and replace the placeholder in the `db_connection` function with your MongoDB connection string or create `.env` file with it like I have done.
 
 - **CORS Configuration**: The CORS headers are configured in `cors.rs`. Update the "Access-Control-Allow-Origin" header with the origin of your frontend.
 
