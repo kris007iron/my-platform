@@ -9,7 +9,7 @@ use rocket::{
     form::Form,
     fs::TempFile,
     futures::StreamExt,
-    get, post,
+    get, patch, post,
     serde::json::{json, Value},
     FromForm, State,
 };
@@ -150,4 +150,46 @@ fn persist_temp_file(upload: &Form<Upload<'_>>) -> Result<String, Custom<Json<Va
     let index = image_str.find("/imgs").unwrap();
     let image_str = &image_str[index..];
     Ok(image_str.to_string())
+}
+
+// Test update_project
+#[patch("/api/v1/projects/<id>", data = "<upload>")]
+pub async fn update_project(
+    db: &State<mongodb::Database>,
+    id: String,
+    upload: Form<Upload<'_>>,
+    _user: AuthenticatedUser,
+) -> Result<Json<Value>, Custom<Json<Value>>> {
+    let collection: mongodb::Collection<Document> = db.collection("projects");
+    //if data is passed, update it
+    let mut project = collection
+        .find_one(doc! { "_id": id.clone() }, None)
+        .await
+        .unwrap()
+        .unwrap();
+    if upload.title.len() > 0 {
+        project.insert("title", upload.title.clone());
+    }
+    if upload.description.len() > 0 {
+        project.insert("description", upload.description.clone());
+    }
+    if upload.link.len() > 0 {
+        project.insert("link", upload.link.clone());
+    }
+    if upload.tags.len() > 0 {
+        let tags: Vec<String> = upload.tags[0].split(",").map(|s| s.to_string()).collect();
+        project.insert("tags", tags.clone());
+    }
+    //if upload.image is not empty, update image
+    if upload.image.name().unwrap().len() > 0 {
+        let img_public_path = persist_temp_file(&upload)?;
+        let images = vec![img_public_path];
+        project.insert("images", images.clone());
+    }
+    collection
+        .update_one(doc! { "_id": id.clone() }, project, None)
+        .await
+        .unwrap();
+
+    Ok(Json(json!({ "status": "succes" })))
 }
