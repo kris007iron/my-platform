@@ -119,7 +119,9 @@ async fn main(
         .mount("/", routes![routes::posts::get_posts])
         .mount("/", routes![routes::posts::create_post])
         .mount("/", routes![routes::projects::create_project])
-        .mount("/", routes![routes::projects::get_projects]);
+        .mount("/", routes![routes::projects::get_projects])
+        .mount("/", routes![routes::projects::update_project])
+        .mount("/", routes![routes::projects::get_project]);
     //.mount("/", routes![submit])
     //.mount("/", routes![login]);
     // .mount("/", routes![get_project])

@@ -1,5 +1,6 @@
 extern crate rocket;
 use crate::AuthenticatedUser;
+use mongodb::bson::oid::ObjectId;
 use mongodb::bson::{doc, uuid, Document};
 use rocket::http::Status;
 use rocket::info;
@@ -152,18 +153,39 @@ fn persist_temp_file(upload: &Form<Upload<'_>>) -> Result<String, Custom<Json<Va
     Ok(image_str.to_string())
 }
 
+#[get("/api/v1/projects/<id>")]
+pub async fn get_project(db: &State<mongodb::Database>, id: &str) -> Value {
+    let collection: mongodb::Collection<Document> = db.collection("projects");
+    let project = collection
+        .find_one(
+            doc! {
+                "_id": ObjectId::parse_str(id).unwrap()
+            },
+            None,
+        )
+        .await
+        .unwrap()
+        .unwrap();
+    json!(project)
+}
+
 // Test update_project
 #[patch("/api/v1/projects/<id>", data = "<upload>")]
 pub async fn update_project(
     db: &State<mongodb::Database>,
-    id: String,
+    id: &str,
     upload: Form<Upload<'_>>,
-    _user: AuthenticatedUser,
+    // _user: AuthenticatedUser,
 ) -> Result<Json<Value>, Custom<Json<Value>>> {
     let collection: mongodb::Collection<Document> = db.collection("projects");
     //if data is passed, update it
     let mut project = collection
-        .find_one(doc! { "_id": id.clone() }, None)
+        .find_one(
+            doc! {
+                "_id": ObjectId::parse_str(id).unwrap()
+            },
+            None,
+        )
         .await
         .unwrap()
         .unwrap();
@@ -187,7 +209,13 @@ pub async fn update_project(
         project.insert("images", images.clone());
     }
     collection
-        .update_one(doc! { "_id": id.clone() }, project, None)
+        .update_one(
+            doc! {
+                "_id": ObjectId::parse_str(id).unwrap()
+            },
+            project,
+            None,
+        )
         .await
         .unwrap();
 
