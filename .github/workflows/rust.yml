@@ -16,7 +16,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set environment variables
+      run: |
+        echo "MONGO_STR=${{ secrets.MONGO_STR }}" >> $GITHUB_ENV
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
+        echo "USER_PASSWORD_HSH=${{ secrets.USER_PASSWORD_HSH }}" >> $GITHUB_ENV
+        echo "USER_NAME=${{ secrets.USER_NAME }}" >> $GITHUB_ENV
+
     - name: Build
       run: cargo build --verbose
+
     - name: Run tests
       run: cargo test --verbose
+      env:
+        MONGO_STR: ${{ secrets.MONGO_STR }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        USER_PASSWORD_HSH: ${{ secrets.USER_PASSWORD_HSH }}
+        USER_NAME: ${{ secrets.USER_NAME }}
