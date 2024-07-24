@@ -7,6 +7,7 @@ use mongodb::{bson::doc, Client};
 use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome, Request};
 use rocket::{fs::NamedFile, get, routes};
+use rocket::{Build, Rocket};
 use serde::Deserialize;
 use shuttle_runtime::SecretStore;
 use utils::jwt::verify_token;
@@ -136,5 +137,79 @@ fn get_mongo_secret(secret_store: &SecretStore) -> String {
         secret
     } else {
         panic!("No secret found for MONGO_STR");
+    }
+}
+
+fn build_rocket(db: mongodb::Database, state: MyState) -> Rocket<Build> {
+    rocket::build()
+        .manage(db)
+        .manage(state)
+        .attach(cors::cors::CORS)
+        .mount("/", routes![index])
+        .mount("/", routes![files])
+        .mount("/", routes![login_s])
+        .mount("/", routes![routes::admin::login])
+        .mount("/", routes![routes::posts::get_posts])
+        .mount("/", routes![routes::posts::create_post])
+        .mount("/", routes![routes::projects::create_project])
+        .mount("/", routes![routes::projects::get_projects])
+        .mount("/", routes![routes::projects::update_project])
+        .mount("/", routes![routes::projects::get_project])
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rocket::http::Status;
+    use rocket::local::asynchronous::Client;
+    use tokio;
+
+    async fn setup() -> Client {
+        let mongo_str = std::env::var("MONGO_STR").expect("MONGO_STR must be set");
+        let jwt_token = std::env::var("JWT_SECRET")
+            .expect("JWT_SECRET must be set")
+            .as_bytes()
+            .to_vec();
+        let username = std::env::var("USER_NAME").expect("USER_NAME must be set");
+        let hashed_password =
+            std::env::var("USER_PASSWORD_HSH").expect("USER_PASSWORD_HSH must be set");
+
+        // Establish a database connection
+        let db = db_connection(&mongo_str).await;
+
+        // Initialize state with the read environment variables
+        let state = MyState {
+            jwt_token,
+            username,
+            hashed_password,
+        };
+        let rocket = build_rocket(db, state);
+        Client::tracked(rocket)
+            .await
+            .expect("valid rocket instance")
+    }
+
+    #[tokio::test]
+    async fn test_get_project() {
+        let client = setup().await;
+        let response = client
+            .get("/api/v1/projects/6543ea5d875bc6bcda7d9218")
+            .dispatch()
+            .await;
+        assert_eq!(response.status(), Status::Ok);
+    }
+
+    #[tokio::test]
+    async fn test_get_projects() {
+        let client = setup().await;
+        let response = client.get("/api/v1/projects").dispatch().await;
+        assert_eq!(response.status(), Status::Ok);
+    }
+
+    #[tokio::test]
+    async fn test_get_posts() {
+        let client = setup().await;
+        let response = client.get("/api/v1/posts").dispatch().await;
+        assert_eq!(response.status(), Status::Ok);
     }
 }
