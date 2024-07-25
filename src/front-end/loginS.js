@@ -235,3 +235,133 @@ async function getProjects()
     }
 }
 
+async function deleteProject(id)
+{
+    try
+    {
+        //TODO: check if id is a string or object
+        const response = await fetch(url + '/projects/' + id, {
+            method: "DELETE",
+            headers: {
+                "Authorization": token,
+            },
+        });
+
+        if (!response.ok)
+        {
+            if (response.status === 401)
+            {
+                alert("Unauthorized: Please log in.");
+            } else if (response.status === 404)
+            {
+                alert("Not Found: Project not found.");
+            } else if (response.status === 500)
+            {
+                alert("Server Error: Please try again later.");
+            } else
+            {
+                alert(`Unexpected Error: ${response.statusText}`);
+            }
+        }
+
+        alert("Project deleted successfully.");
+    } catch (error)
+    {
+        console.error("Failed to delete project:", error.message);
+    }
+}
+
+async function updateProject(id)
+{
+    //TODO: open the modal for update etc, maybe change the name of the function
+}
+
+async function generatePostsList()
+{
+    let postList = document.getElementById('posts-list');
+    postList.innerHTML = '';
+    let posts = await getPosts();
+    for (let post of posts)
+    {
+        let postItem = document.createElement('li');
+        postItem.innerHTML = `<h3>${post.title}</h3>
+        <p>${post.pub_date}</p>
+        <a href="${post.link}">Link</a>
+        <img src="${post.thumbnail}" alt="${post.title}">
+        <button onclick="deletePost(${post._id})">Delete</button>
+        <button onclick="updatePost(${post._id})">Patch</button>`;
+        postList.appendChild(postItem);
+    }
+}
+
+async function getPosts()
+{
+    try
+    {
+        const response = await fetch(url + '/posts', {
+            method: "GET",
+        });
+
+        if (!response.ok)
+        {
+            if (response.status === 401)
+            {
+                alert("Unauthorized: Please log in.");
+            } else if (response.status === 500)
+            {
+                alert("Server Error: Please try again later.");
+            } else
+            {
+                alert(`Unexpected Error: ${response.statusText}`);
+            }
+        }
+
+        let result = await response.json();
+        let posts = result.posts;
+        return posts;
+    } catch (error)
+    {
+        console.error("Failed to get posts:", error.message);
+    }
+}
+
+async function deletePost(id)
+{
+    try
+    {
+        //TODO: check if id is a string or object
+        const response = await fetch(url + '/posts/' + id, {
+            method: "DELETE",
+            headers: {
+                "Authorization": token,
+            },
+        });
+
+        if (!response.ok)
+        {
+            if (response.status === 401)
+            {
+                alert("Unauthorized: Please log in.");
+            } else if (response.status === 404)
+            {
+                alert("Not Found: Post not found.");
+            } else if (response.status === 500)
+            {
+                alert("Server Error: Please try again later.");
+            } else
+            {
+                alert(`Unexpected Error: ${response.statusText}`);
+            }
+        }
+
+        alert("Post deleted successfully.");
+    } catch (error)
+    {
+        console.error("Failed to delete post:", error.message);
+    }
+}
+
+async function updatePost(id)
+{
+    //TODO: open the modal for update etc, maybe change the name of the function
+}
