@@ -183,3 +183,55 @@ async function loginUser(url, postData)
         return { success: false, message: error.message };
     }
 }
+
+async function generateProjectsList()
+{
+    let projectList = document.getElementById('projects-list');
+    projectList.innerHTML = '';
+    let projects = await getProjects();
+    for (let project of projects)
+    {
+        //_id: {$oid: "6543ea5d875bc6bcda7d9218"}
+        let projectItem = document.createElement('li');
+        projectItem.innerHTML = `<h3>${project.title}</h3>
+        <p>${project.description}</p>
+        <a href="${project.link}">Link</a>
+        <img src="${project.image}" alt="${project.title}">
+        <p>${project.tags}</p>
+        <button onclick="deleteProject(${project._id})">Delete</button>
+        <button onclick="updateProject(${project._id})">Patch</button>`;
+        projectList.appendChild(projectItem);
+    }
+}
+
+async function getProjects()
+{
+    try
+    {
+        const response = await fetch(url + '/projects', {
+            method: "GET",
+        });
+
+        if (!response.ok)
+        {
+            if (response.status === 401)
+            {
+                alert("Unauthorized: Please log in.");
+            } else if (response.status === 500)
+            {
+                alert("Server Error: Please try again later.");
+            } else
+            {
+                alert(`Unexpected Error: ${response.statusText}`);
+            }
+        }
+
+        let result = await response.json();
+        let projects = result.projects;
+        return projects;
+    } catch (error)
+    {
+        console.error("Failed to get projects:", error.message);
+    }
+}
+
