@@ -7,7 +7,7 @@ use mongodb::{bson::doc, Client};
 use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome, Request};
 use rocket::{fs::NamedFile, get, routes};
-use rocket::{Build, Rocket};
+
 use serde::Deserialize;
 use shuttle_runtime::SecretStore;
 use utils::jwt::verify_token;
@@ -140,29 +140,30 @@ fn get_mongo_secret(secret_store: &SecretStore) -> String {
     }
 }
 
-fn build_rocket(db: mongodb::Database, state: MyState) -> Rocket<Build> {
-    rocket::build()
-        .manage(db)
-        .manage(state)
-        .attach(cors::cors::CORS)
-        .mount("/", routes![index])
-        .mount("/", routes![files])
-        .mount("/", routes![login_s])
-        .mount("/", routes![routes::admin::login])
-        .mount("/", routes![routes::posts::get_posts])
-        .mount("/", routes![routes::posts::create_post])
-        .mount("/", routes![routes::projects::create_project])
-        .mount("/", routes![routes::projects::get_projects])
-        .mount("/", routes![routes::projects::update_project])
-        .mount("/", routes![routes::projects::get_project])
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use rocket::http::Status;
     use rocket::local::asynchronous::Client;
+    use rocket::{Build, Rocket};
     use tokio;
+
+    fn build_rocket(db: mongodb::Database, state: MyState) -> Rocket<Build> {
+        rocket::build()
+            .manage(db)
+            .manage(state)
+            .attach(cors::cors::CORS)
+            .mount("/", routes![index])
+            .mount("/", routes![files])
+            .mount("/", routes![login_s])
+            .mount("/", routes![routes::admin::login])
+            .mount("/", routes![routes::posts::get_posts])
+            .mount("/", routes![routes::posts::create_post])
+            .mount("/", routes![routes::projects::create_project])
+            .mount("/", routes![routes::projects::get_projects])
+            .mount("/", routes![routes::projects::update_project])
+            .mount("/", routes![routes::projects::get_project])
+    }
 
     async fn setup() -> Client {
         //dotenv::dotenv().ok();
