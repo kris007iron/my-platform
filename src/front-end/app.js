@@ -99,7 +99,7 @@ data.then((data) =>
             projects.innerHTML += `        
             <a class="project" href="${project.link}">
             <div class="project-img">
-                <img src="${project.images[0]}" alt="">
+                <img src="${project.images[0]}" alt="" loading="lazy">
             </div>
             <div class="project-text">
                 <h3>${project.title}</h3>
@@ -125,7 +125,7 @@ renderBlogs = (blogs) =>
             const columnContent = blogs.items.slice(i, i + 3).map(post =>
             {
                 return `<div class="card">
-                    <img src=${post.thumbnail} class="Img" />
+                    <img src=${post.thumbnail} class="Img" loading="lazy"/>
                     <h1 class="cardHeader">${post.title}</h1>
                     <p class="cardText">Posted on: ${post.pubDate}</p>
                     <a href=${post.link} class="Link"> Read the Full Blog Here!</a>
