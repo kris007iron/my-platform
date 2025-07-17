@@ -14,3 +14,5 @@ Cargo.lock
 *.pdb
 Secrets*.toml
 .env
+/target
+.shuttle*

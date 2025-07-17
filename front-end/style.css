@@ -320,6 +320,10 @@ header #text {
     border-radius: 10px;
 }
 
+.project .project-text {
+    width: 40%;
+}
+
 .project .project-text .extras {
     display: flex;
     align-items: center;
