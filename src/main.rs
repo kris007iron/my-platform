@@ -69,10 +69,6 @@ async fn db_connection(client: &str) -> mongodb::Database {
 // TODO: when developing SPA in vue add regex to let builtin router handle the routes
 #[get("/<file..>")]
 async fn files(file: PathBuf) -> Option<NamedFile> {
-    // let project_path = std::env::current_dir().unwrap();
-    // println!("{:?}", project_path.to_str());
-    // let build_path = project_path.join("src/front-end");
-    // file.set_extension("html");
     let mut file = Path::new(relative!("front-end")).join(file);
     if file.is_dir() {
         file.push("index.html");
