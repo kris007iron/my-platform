@@ -1,3 +1,5 @@
+use rocket::fs::relative;
+use std::path::Path;
 use std::{io, path::PathBuf};
 extern crate rocket;
 
@@ -11,6 +13,8 @@ use rocket::{fs::NamedFile, get, routes};
 use serde::Deserialize;
 use shuttle_runtime::SecretStore;
 use utils::jwt::verify_token;
+
+use tracing::info;
 
 mod cors;
 mod routes;
@@ -65,22 +69,29 @@ async fn db_connection(client: &str) -> mongodb::Database {
 // TODO: when developing SPA in vue add regex to let builtin router handle the routes
 #[get("/<file..>")]
 async fn files(file: PathBuf) -> Option<NamedFile> {
-    let project_path = std::env::current_dir().unwrap();
-    let build_path = project_path.join("src/front-end");
-    NamedFile::open(build_path.join(file)).await.ok()
+    // let project_path = std::env::current_dir().unwrap();
+    // println!("{:?}", project_path.to_str());
+    // let build_path = project_path.join("src/front-end");
+    // file.set_extension("html");
+    let mut file = Path::new(relative!("front-end")).join(file);
+    if file.is_dir() {
+        file.push("index.html");
+    }
+    info!("{:?}", file);
+    NamedFile::open(file).await.ok()
 }
 
 #[get("/")]
 async fn index() -> io::Result<NamedFile> {
     let project_path = std::env::current_dir().unwrap();
-    let build_path = project_path.join("src/front-end");
+    let build_path = project_path.join("front-end");
     NamedFile::open(build_path.join("index.html")).await
 }
 
 #[get("/login")]
 async fn login_s() -> io::Result<NamedFile> {
     let project_path = std::env::current_dir().unwrap();
-    let build_path = project_path.join("src/front-end");
+    let build_path = project_path.join("front-end");
     NamedFile::open(build_path.join("login.html")).await
 }
 
