@@ -1,5 +1,6 @@
 use crate::{utils::jwt::create_token, MyState};
 use bcrypt::verify;
+use rocket::options;
 use rocket::serde::json::{json, Value};
 use rocket::{http::Status, serde::json::Json};
 use rocket::{post, response::status::Custom, State};

@@ -170,6 +170,7 @@ mod tests {
             .mount("/", routes![routes::projects::get_projects])
             .mount("/", routes![routes::projects::update_project])
             .mount("/", routes![routes::projects::get_project])
+        // .mount("/", routes![routes::admin::login_options])
     }
 
     async fn setup() -> Client {
