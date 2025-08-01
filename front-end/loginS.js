@@ -198,7 +198,7 @@ async function generateProjectsList()
         projectItem.innerHTML = `<h3>${project.title}</h3>
         <p>${project.description}</p>
         <a href="${project.link}">Link</a>
-        <img src="${project.image[0]}" alt="${project.title}">
+        <img src="${project.images[0]}" alt="${project.title}">
         <p>${project.tags}</p>
         <button onclick="deleteProject(${project._id})">Delete</button>
         <button onclick="updateProject(${project._id})">Patch</button>`;
@@ -229,7 +229,10 @@ async function getProjects()
         }
 
         let result = await response.json();
-        console.log(result);
+        console.log(result.map(res =>
+        {
+            console.log(res._id)
+        }))
         return result;
     } catch (error)
     {

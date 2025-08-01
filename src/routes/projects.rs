@@ -80,7 +80,7 @@ fn persist_temp_file(upload: &Form<Upload<'_>>) -> Result<String, Custom<Json<Va
             Json(json!({"error": format!("Failed to retrieve current directory: {}", e)})),
         )
     })?;
-    let persist_to_path = project_path.join("src/front-end/imgs/projects/");
+    let persist_to_path = project_path.join("front-end/imgs/projects/");
     info!("Persist to path: {:?}", persist_to_path);
 
     // Ensure directory exists
@@ -203,11 +203,12 @@ pub async fn update_project(
         project.insert("tags", tags.clone());
     }
     //if upload.image is not empty, update image
-    if upload.image.name().unwrap().len() > 0 {
+    if upload.image.len() > 0 {
         let img_public_path = persist_temp_file(&upload)?;
         let images = vec![img_public_path];
         project.insert("images", images.clone());
     }
+    println!("{}", project);
     collection
         .update_one(
             doc! {

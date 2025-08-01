@@ -62,7 +62,7 @@ fn persist_temp_file(upload: &Form<Upload<'_>>) -> Result<String, Custom<Json<Va
             Json(json!({"error": format!("Failed to retrieve current directory: {}", e)})),
         )
     })?;
-    let persist_to_path = project_path.join("src/front-end/imgs/posts/");
+    let persist_to_path = project_path.join("front-end/imgs/posts/");
     info!("Persist to path: {:?}", persist_to_path);
 
     // Ensure directory exists

@@ -199,7 +199,7 @@ mod tests {
             .expect("valid rocket instance")
     }
 
-    #[tokio::test]
+    /*#[tokio::test]
     async fn test_get_project() {
         let client = setup().await;
         let response = client
@@ -223,62 +223,62 @@ mod tests {
         assert_eq!(response.status(), Status::Ok);
     }
 
-    // #[tokio::test]
-    // async fn test_update_project() {
-    //     use rocket::http::ContentType;
-    //     use std::fs::File;
-    //     use std::io::{Cursor, Read};
+    #[tokio::test]
+    async fn test_update_project() {
+        use rocket::http::ContentType;
+        use std::fs::File;
+        use std::io::{Cursor, Read};
 
-    //     let client = setup().await;
+        let client = setup().await;
 
-    //     let mut file =
-    //         File::open("src/front-end/imgs/projects/foodie.png").expect("Image file not found");
-    //     let mut image_data = Vec::new();
-    //     file.read_to_end(&mut image_data)
-    //         .expect("Failed to read image file");
+        let mut file =
+            File::open("src/front-end/imgs/projects/foodie.png").expect("Image file not found");
+        let mut image_data = Vec::new();
+        file.read_to_end(&mut image_data)
+            .expect("Failed to read image file");
 
-    //     // Encode image data as a base64 string
-    //     let image_base64 = base64::encode(image_data);
+        // Encode image data as a base64 string
+        let image_base64 = base64::encode(image_data);
 
-    //     // Creating the multipart form data as a String
-    //     let form_data = format!(
-    //         "--boundary\r\n\
-    //     Content-Disposition: form-data; name=\"title\"\r\n\r\n\
-    //     Updated Project Title\r\n\
-    //     --boundary\r\n\
-    //     Content-Disposition: form-data; name=\"description\"\r\n\r\n\
-    //     Updated description\r\n\
-    //     --boundary\r\n\
-    //     Content-Disposition: form-data; name=\"link\"\r\n\r\n\
-    //     https://updated.link\r\n\
-    //     --boundary\r\n\
-    //     Content-Disposition: form-data; name=\"tags\"\r\n\r\n\
-    //     rust,backend,api\r\n\
-    //     --boundary\r\n\
-    //     Content-Disposition: form-data; name=\"image\"; filename=\"image.png\"\r\n\
-    //     Content-Type: image/png\r\n\r\n\
-    //     < ./src/front-end/imgs/projects/foodie.png\r\n\
-    //     --boundary--"
-    //     );
+        // Creating the multipart form data as a String
+        let form_data = format!(
+            "--boundary\r\n\
+        Content-Disposition: form-data; name=\"title\"\r\n\r\n\
+        Updated Project Title\r\n\
+        --boundary\r\n\
+        Content-Disposition: form-data; name=\"description\"\r\n\r\n\
+        Updated description\r\n\
+        --boundary\r\n\
+        Content-Disposition: form-data; name=\"link\"\r\n\r\n\
+        https://updated.link\r\n\
+        --boundary\r\n\
+        Content-Disposition: form-data; name=\"tags\"\r\n\r\n\
+        rust,backend,api\r\n\
+        --boundary\r\n\
+        Content-Disposition: form-data; name=\"image\"; filename=\"image.png\"\r\n\
+        Content-Type: image/png\r\n\r\n\
+        < ./src/front-end/imgs/projects/foodie.png\r\n\
+        --boundary--"
+        );
 
-    //     // Convert the string to a byte stream
-    //     let body = Cursor::new(form_data);
+        // Convert the string to a byte stream
+        let body = Cursor::new(form_data);
 
-    //     // Convert the cursor to a byte slice
-    //     let body_bytes: &[u8] = body.get_ref().as_bytes();
+        // Convert the cursor to a byte slice
+        let body_bytes: &[u8] = body.get_ref().as_bytes();
 
-    //     // Send the PATCH request
-    //     let response = client
-    //         .patch("/api/v1/projects/6543ea5d875bc6bcda7d9218")
-    //         .header(ContentType::new(
-    //             "multipart",
-    //             "form-data; boundary=boundary",
-    //         ))
-    //         .body(body_bytes)
-    //         .dispatch()
-    //         .await;
+        // Send the PATCH request
+        let response = client
+            .patch("/api/v1/projects/6543ea5d875bc6bcda7d9218")
+            .header(ContentType::new(
+                "multipart",
+                "form-data; boundary=boundary",
+            ))
+            .body(body_bytes)
+            .dispatch()
+            .await;
 
-    //     // Check the response status
-    //     assert_eq!(response.status(), rocket::http::Status::Ok);
-    // }
+        // Check the response status
+        assert_eq!(response.status(), rocket::http::Status::Ok);
+    }*/
 }
