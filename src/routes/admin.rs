@@ -38,3 +38,8 @@ pub async fn login(
         )),
     }
 }
+
+#[options("/api/v1/login")]
+pub async fn login_options() -> Status {
+    Status::Ok
+}

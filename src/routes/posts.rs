@@ -1,16 +1,8 @@
 extern crate rocket;
 use crate::AuthenticatedUser;
-use mongodb::bson::{doc, uuid, Document};
+use mongodb::bson::{doc, oid::ObjectId, uuid, Document};
 use rocket::{
-    form::Form,
-    fs::TempFile,
-    futures::StreamExt,
-    get,
-    http::Status,
-    info, post,
-    response::status::Custom,
-    serde::json::{json, Json, Value},
-    FromForm, State,
+    form::Form, fs::TempFile, futures::StreamExt, get, http::Status, info, patch, post, response::status::Custom, serde::json::{json, Json, Value}, FromForm, State
 };
 use sanitize_filename::sanitize;
 use std::fs;
@@ -54,6 +46,58 @@ pub async fn create_post(
     collection.insert_one(post, None).await.unwrap();
     json!({"status": "ok"})
 }
+
+//TODO: test it
+#[patch("/api/v1/posts/<id>", data = "<upload>")]
+pub async fn update_post(
+    db: &State<mongodb::Database>,
+    id: &str,
+    upload: Form<Upload<'_>>,
+    _user: AuthenticatedUser,
+    // _user: AuthenticatedUser,
+) -> Result<Json<Value>, Custom<Json<Value>>> {
+    let collection: mongodb::Collection<Document> = db.collection("posts");
+    //if data is passed, update it
+    let mut project = collection
+        .find_one(
+            doc! {
+                "_id": ObjectId::parse_str(id).unwrap()
+            },
+            None,
+        )
+        .await
+        .unwrap()
+        .unwrap();
+    if upload.title.len() > 0 {
+        project.insert("title", upload.title.clone());
+    }
+    if upload.pub_date.len() > 0 {
+        project.insert("pubDate", upload.pub_date.clone());
+    }
+    if upload.link.len() > 0 {
+        project.insert("link", upload.link.clone());
+    }
+    //if upload.image is not empty, update image
+    if upload.thumbnail.len() > 0 {
+        let img_public_path = persist_temp_file(&upload)?;
+        let images = vec![img_public_path];
+        project.insert("thumbnail", images.clone());
+    }
+    println!("{}", project);
+    collection
+        .replace_one(
+            doc! {
+                "_id": ObjectId::parse_str(id).unwrap()
+            },
+            project,
+            None,
+        )
+        .await
+        .unwrap();
+
+    Ok(Json(json!({ "status": "succes" })))
+}
+
 
 fn persist_temp_file(upload: &Form<Upload<'_>>) -> Result<String, Custom<Json<Value>>> {
     let project_path = std::env::current_dir().map_err(|e| {

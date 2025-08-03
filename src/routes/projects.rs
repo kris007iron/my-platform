@@ -169,12 +169,13 @@ pub async fn get_project(db: &State<mongodb::Database>, id: &str) -> Value {
     json!(project)
 }
 
-// Test update_project
+// TODO: better error handeling
 #[patch("/api/v1/projects/<id>", data = "<upload>")]
 pub async fn update_project(
     db: &State<mongodb::Database>,
     id: &str,
     upload: Form<Upload<'_>>,
+    _user: AuthenticatedUser,
     // _user: AuthenticatedUser,
 ) -> Result<Json<Value>, Custom<Json<Value>>> {
     let collection: mongodb::Collection<Document> = db.collection("projects");
@@ -210,7 +211,7 @@ pub async fn update_project(
     }
     println!("{}", project);
     collection
-        .update_one(
+        .replace_one(
             doc! {
                 "_id": ObjectId::parse_str(id).unwrap()
             },

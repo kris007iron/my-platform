@@ -1,4 +1,4 @@
-let url = 'http://127.0.0.1:8000/api/v1';
+let url = 'http://localhost:8000/api/v1';
 // let url = 'https://kris007iron-o9ms.shuttle.app/api/v1';
 
 let token = 'Bearer '

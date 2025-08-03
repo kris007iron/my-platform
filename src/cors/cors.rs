@@ -20,6 +20,7 @@ impl Fairing for CORS {
         let allowed_origins = [
             "http://127.0.0.1:8000",
             "localhost:8000",
+            "localhost:8000/login",
             "https://kris007iron-o9ms.shuttle.app",
         ];
 
