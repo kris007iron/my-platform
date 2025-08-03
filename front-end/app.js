@@ -1,5 +1,5 @@
-let url = 'http://localhost:8000/api/v1';
-// let url = 'https://kris007iron-o9ms.shuttle.app/api/v1';
+// let url = 'http://localhost:8000/api/v1';
+let url = 'https://kris007iron-o9ms.shuttle.app/api/v1';
 
 let hiddenElements = document.querySelectorAll('.hidden');
 const observer = new IntersectionObserver(entries =>

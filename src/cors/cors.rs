@@ -17,12 +17,7 @@ impl Fairing for CORS {
 
     async fn on_response<'r>(&self, request: &'r Request<'_>, response: &mut Response<'r>) {
         let origin = request.headers().get_one("Origin").unwrap_or_default();
-        let allowed_origins = [
-            "http://127.0.0.1:8000",
-            "localhost:8000",
-            "localhost:8000/login",
-            "https://kris007iron-o9ms.shuttle.app",
-        ];
+        let allowed_origins = ["https://kris007iron-o9ms.shuttle.app"];
 
         if allowed_origins.contains(&origin) {
             response.set_header(Header::new("Access-Control-Allow-Origin", origin));
