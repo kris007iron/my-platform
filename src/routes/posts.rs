@@ -2,7 +2,16 @@ extern crate rocket;
 use crate::AuthenticatedUser;
 use mongodb::bson::{doc, oid::ObjectId, uuid, Document};
 use rocket::{
-    form::Form, fs::TempFile, futures::StreamExt, get, http::Status, info, patch, post, response::status::Custom, serde::json::{json, Json, Value}, FromForm, State
+    delete,
+    form::Form,
+    fs::TempFile,
+    futures::StreamExt,
+    get,
+    http::Status,
+    info, patch, post,
+    response::status::Custom,
+    serde::json::{json, Json, Value},
+    FromForm, State,
 };
 use sanitize_filename::sanitize;
 use std::fs;
@@ -98,6 +107,40 @@ pub async fn update_post(
     Ok(Json(json!({ "status": "succes" })))
 }
 
+#[get("/api/v1/posts/<id>")]
+pub async fn get_post(db: &State<mongodb::Database>, id: &str) -> Value {
+    let collection: mongodb::Collection<Document> = db.collection("posts");
+    let project = collection
+        .find_one(
+            doc! {
+                "_id": ObjectId::parse_str(id).unwrap()
+            },
+            None,
+        )
+        .await
+        .unwrap()
+        .unwrap();
+    json!(project)
+}
+
+#[delete("/api/v1/posts/<id>")]
+pub async fn delete_post(
+    db: &State<mongodb::Database>,
+    id: &str,
+    _user: AuthenticatedUser,
+) -> Value {
+    let collection: mongodb::Collection<Document> = db.collection("posts");
+    let project = collection
+        .delete_one(
+            doc! {
+                "_id": ObjectId::parse_str(id).unwrap()
+            },
+            None,
+        )
+        .await
+        .unwrap();
+    json!(project)
+}
 
 fn persist_temp_file(upload: &Form<Upload<'_>>) -> Result<String, Custom<Json<Value>>> {
     let project_path = std::env::current_dir().map_err(|e| {

@@ -3,9 +3,9 @@ use crate::AuthenticatedUser;
 use mongodb::bson::oid::ObjectId;
 use mongodb::bson::{doc, uuid, Document};
 use rocket::http::Status;
-use rocket::info;
 use rocket::response::status::Custom;
 use rocket::serde::json::Json;
+use rocket::{delete, info};
 use rocket::{
     form::Form,
     fs::TempFile,
@@ -222,4 +222,23 @@ pub async fn update_project(
         .unwrap();
 
     Ok(Json(json!({ "status": "succes" })))
+}
+
+#[delete("/api/v1/projects/<id>")]
+pub async fn delete_project(
+    db: &State<mongodb::Database>,
+    id: &str,
+    _user: AuthenticatedUser,
+) -> Value {
+    let collection: mongodb::Collection<Document> = db.collection("projects");
+    let project = collection
+        .delete_one(
+            doc! {
+                "_id": ObjectId::parse_str(id).unwrap()
+            },
+            None,
+        )
+        .await
+        .unwrap();
+    json!(project)
 }
