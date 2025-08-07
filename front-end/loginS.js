@@ -2,6 +2,11 @@
 let url = 'https://kris007iron-o9ms.shuttle.app/api/v1';
 
 let token = 'Bearer '
+let deleteTargetId = null
+let deleteType = null
+let currentEditProjectId = null
+let currentEditPostId = null
+
 async function hash()
 {
     const password = document.getElementById('password').value
@@ -369,4 +374,34 @@ async function deletePost(id)
 async function updatePost(id)
 {
     //TODO: open the modal for update etc, maybe change the name of the function
+}
+
+function showDeleteModal(id, type)
+{
+    deleteTargetId = id;
+    deleteType = type;
+    document.getElementById('confirm-delete-modal').classList.remove('hidden');
+}
+
+function confirmDelete()
+{
+    if (deleteType === 'project')
+    {
+        deleteProject(deleteTargetId);
+    } else if (deleteType === 'post')
+    {
+        deletePost(deleteTargetId);
+    }
+}
+
+function closeModal()
+{
+    document.querySelector('.modal').forEach(modal =>
+    {
+        modal.classList.add('hidden')
+    });
+    deleteTargetId = null;
+    deleteType = null;
+    currentEditPostId = null;
+    currentEditProjectId = null;
 }
