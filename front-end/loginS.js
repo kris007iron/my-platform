@@ -283,7 +283,13 @@ async function deleteProject(id)
 
 async function updateProject(id)
 {
-    //TODO: open the modal for update etc, maybe change the name of the function
+    currentEditProjectId = id;
+
+    const project = [...document.querySelector('#project-list li')].find(li => li.innerHTML.includes(id))
+    if (!project) return;
+
+    document.getElementById('edit-project-title').value = project.querySelector('h3')?.textContent || '';
+    //TODO: rest
 }
 
 async function generatePostsList()
