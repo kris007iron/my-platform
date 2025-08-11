@@ -281,6 +281,7 @@ async function deleteProject(id)
     }
 }
 
+//TODO: test it
 async function updateProject(id)
 {
     currentEditProjectId = id;
@@ -289,7 +290,48 @@ async function updateProject(id)
     if (!project) return;
 
     document.getElementById('edit-project-title').value = project.querySelector('h3')?.textContent || '';
-    //TODO: rest
+    document.getElementById('edit-project-description').value = project.querySelector('p')?.textContent || '';
+    document.getElementById('edit-project-link').value = project.querySelector('a')?.href || '';
+    document.getElementById('edit-project-tags').value = project.querySelector('p')[1]?.textContent || '';
+
+    document.getElementById('update-project-modal').classList.remove('hidden');
+}
+
+async function submitProjectUpdate()
+{
+    const updatedData = {
+        title: document.getElementById('edit-project-title').valuem,
+        description: document.getElementById('edit-project-description').value,
+        link: document.getElementById('edit-project-link').value,
+        tags: document.getElementById('edit-project-tags').value.split(',')
+        //TODO: add photo
+    };
+
+    try
+    {
+        const response = await fetch(`${url}/projects/${currentEditProjectId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token,
+            },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (!response.ok)
+        {
+            alert("Failed to update project")
+        } else
+        {
+            alert("Project updated successfully")
+            await generateProjectsList()
+        }
+    }
+    catch (err)
+    {
+        console.err("UPDATE failed: ", err.message)
+    }
+    closeModal()
 }
 
 async function generatePostsList()
