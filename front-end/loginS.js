@@ -205,8 +205,9 @@ async function generateProjectsList()
         <a href="${project.link}">Link</a>
         <img src="${project.images[0]}" alt="${project.title}">
         <p>${project.tags}</p>
-        <button onclick="deleteProject(${project._id})">Delete</button>
-        <button onclick="updateProject(${project._id})">Patch</button>`;
+        <button onclick="showDeleteModal('${project._id}', 'project')">Delete</button>
+        <button onclick="updateProject('${project._id}')">Edit</button>
+        `;
         projectList.appendChild(projectItem);
     }
 }
@@ -249,7 +250,6 @@ async function deleteProject(id)
 {
     try
     {
-        //TODO: check if id is a string or object
         const response = await fetch(url + '/projects/' + id, {
             method: "DELETE",
             headers: {
@@ -286,7 +286,7 @@ async function updateProject(id)
 {
     currentEditProjectId = id;
 
-    const project = [...document.querySelector('#project-list li')].find(li => li.innerHTML.includes(id))
+    const project = [...document.querySelector('#projects-list li')].find(li => li.innerHTML.includes(id))
     if (!project) return;
 
     document.getElementById('edit-project-title').value = project.querySelector('h3')?.textContent || '';
@@ -303,8 +303,8 @@ async function submitProjectUpdate()
         title: document.getElementById('edit-project-title').valuem,
         description: document.getElementById('edit-project-description').value,
         link: document.getElementById('edit-project-link').value,
-        tags: document.getElementById('edit-project-tags').value.split(',')
-        //TODO: add photo
+        tags: document.getElementById('edit-project-tags').value.split(','),
+        image: document.getElementById('edit-project-image').files[0] ? document.getElementById('edit-project-image').files[0] : ""
     };
 
     try
@@ -346,7 +346,7 @@ async function generatePostsList()
         <p>${post.pub_date}</p>
         <a href="${post.link}">Link</a>
         <img src="${post.thumbnail}" alt="${post.title}">
-        <button onclick="deletePost(${post._id})">Delete</button>
+        <button onclick="showDeleteModal('${post._id}', 'post')">Delete</button>
         <button onclick="updatePost(${post._id})">Patch</button>`;
         postList.appendChild(postItem);
     }
@@ -387,7 +387,6 @@ async function deletePost(id)
 {
     try
     {
-        //TODO: check if id is a string or object
         const response = await fetch(url + '/posts/' + id, {
             method: "DELETE",
             headers: {
@@ -421,7 +420,55 @@ async function deletePost(id)
 
 async function updatePost(id)
 {
-    //TODO: open the modal for update etc, maybe change the name of the function
+    //TODO: add photo
+    currentEditPostId = id;
+
+    const post = [...document.querySelector('#posts-list li')].find(li => li.innerHTML.includes(id))
+    if (!project) return;
+
+    document.getElementById('edit-post-title').value = project.querySelector('h3')?.textContent || '';
+    document.getElementById('edit-post-description').value = project.querySelector('p')?.textContent || '';
+    document.getElementById('edit-post-link').value = project.querySelector('a')?.href || '';
+    document.getElementById('edit-post-tags').value = project.querySelector('p')[1]?.textContent || '';
+
+    document.getElementById('update-project-modal').classList.remove('hidden');
+}
+
+async function submitPostUpdate()
+{
+    const updatedData = {
+        title: document.getElementById('edit-post-title').valuem,
+        pub_date: document.getElementById('edit-post-pubDate').value,
+        link: document.getElementById('edit-post-link').value,
+        thumbnail: document.getElementById('edit-post-thumbnail').value.split(',')
+        //TODO: add photo
+    };
+
+    try
+    {
+        const response = await fetch(`${url}/projects/${currentEditPostId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token,
+            },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (!response.ok)
+        {
+            alert("Failed to update project")
+        } else
+        {
+            alert("Project updated successfully")
+            await generateProjectsList()
+        }
+    }
+    catch (err)
+    {
+        console.err("UPDATE failed: ", err.message)
+    }
+    closeModal()
 }
 
 function showDeleteModal(id, type)

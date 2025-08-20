@@ -235,42 +235,42 @@
     <div id="confirm-delete-modal" class="modal hidden">
         <div class="modal-content">
             <p>Are you shure you want to delete this item(there is no going back)?</p>
-            <button class="btn confirm-btn">Yes</button>
-            <button class="btn cancel-btn">No</button>
+            <button class="btn confirm-btn" onclick="confirmDelete()">Yes</button>
+            <button class="btn cancel-btn" onclick="closeModal()">No</button>
         </div>
     </div>
 
     <div id="update-project-modal" class="modal hidden">
         <div class="modal-content">
             <h2>Edit Project</h2>
-            <label for="projects-form-title">Tytuł</label>
-            <input type="text" name="title" id="projects-form-title">
-            <label for="projects-form-description">Opis</label>
-            <input type="text" name="description" id="projects-form-description">
-            <label for="projects-form-link">Link</label>
-            <input type="url" name="link" id="projects-form-link">
-            <label for="projects-form-images">Obrazek</label>
-            <input type="file" name="images" accept="image/*" id="projects-form-images">
-            <label for="projects-form-tags">Tagi(tag,tag)</label>
-            <input type="text" name="tags" id="projects-form-tags">
-            <button type="submit" onclick="" class="btn confirm-btn">Zaktualizuj</button>
-            <button type="submit" onclick="" class="btn cancel-btn">Anuluj</button>
+            <label for="edit-project-title">Tytuł</label>
+            <input type="text" name="title" id="edit-project-title">
+            <label for="edit-project-description">Opis</label>
+            <input type="text" name="description" id="edit-project-description">
+            <label for="edit-project-link">Link</label>
+            <input type="url" name="link" id="edit-project-link">
+            <label for="edit-project-image">Obrazek</label>
+            <input type="file" name="images" accept="image/*" id="edit-project-image">
+            <label for="edit-project-tags">Tagi(tag,tag)</label>
+            <input type="text" name="tags" id="edit-project-tags">
+            <button type="submit" onclick="submitProjectUpdate()" class="btn confirm-btn">Zaktualizuj</button>
+            <button type="submit" onclick="closeModal()" class="btn cancel-btn">Anuluj</button>
         </div>
     </div>
 
     <div>
         <div>
             <h2>Edit Post</h2>
-            <label for="posts-form-title">Tytuł</label>
-            <input type="text" name="title" id="posts-form-title">
-            <label for="posts-form-pubDate">Data publikacji (MMM DD, YYYY)</label>
-            <input type="text" name="pubDate" id="posts-form-pubDate">
-            <label for="posts-form-link">Link</label>
-            <input type="url" name="link" id="posts-form-link">
-            <label for="posts-form-thumbnail">Obrazek</label>
-            <input type="file" name="thumbnail" accept="image/*" id="posts-form-thumbnail">
-            <button type="submit" onclick="" class="btn confirm-btn">Zaktualizuj</button>
-            <button type="submit" onclick="" class="btn cancel-btn">Anuluj</button>
+            <label for="edit-post-title">Tytuł</label>
+            <input type="text" name="title" id="edit-post-title">
+            <label for="edit-post-pubDate">Data publikacji (MMM DD, YYYY)</label>
+            <input type="text" name="pubDate" id="edit-post-pubDate">
+            <label for="edit-post-link">Link</label>
+            <input type="url" name="link" id="edit-post-link">
+            <label for="edit-post-thumbnail">Obrazek</label>
+            <input type="file" name="thumbnail" accept="image/*" id="edit-post-thumbnail">
+            <button type="submit" onclick="submitPostUpdate()" class="btn confirm-btn">Zaktualizuj</button>
+            <button type="submit" onclick="closeModal()" class="btn cancel-btn">Anuluj</button>
         </div>
     </div>
 
