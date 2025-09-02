@@ -286,13 +286,13 @@ async function updateProject(id)
 {
     currentEditProjectId = id;
 
-    const project = [...document.querySelector('#projects-list li')].find(li => li.innerHTML.includes(id))
+    const project = [...document.querySelectorAll('#projects-list li')].find(li => li.innerHTML.includes(id))
     if (!project) return;
 
     document.getElementById('edit-project-title').value = project.querySelector('h3')?.textContent || '';
     document.getElementById('edit-project-description').value = project.querySelector('p')?.textContent || '';
     document.getElementById('edit-project-link').value = project.querySelector('a')?.href || '';
-    document.getElementById('edit-project-tags').value = project.querySelector('p')[1]?.textContent || '';
+    document.getElementById('edit-project-tags').value = project.querySelectorAll('p')[1]?.textContent || '';
 
     document.getElementById('update-project-modal').classList.remove('hidden');
 }
@@ -300,12 +300,20 @@ async function updateProject(id)
 async function submitProjectUpdate()
 {
     const updatedData = {
-        title: document.getElementById('edit-project-title').valuem,
+        title: document.getElementById('edit-project-title').value,
         description: document.getElementById('edit-project-description').value,
         link: document.getElementById('edit-project-link').value,
         tags: document.getElementById('edit-project-tags').value.split(','),
-        image: document.getElementById('edit-project-image').files[0] ? document.getElementById('edit-project-image').files[0] : ""
+        image: document.getElementById('edit-project-image').files[0]
     };
+
+    const formData = new FormData();
+
+    formData.append('title', updatedData.title);
+    formData.append('description', updatedData.description);
+    formData.append('link', updatedData.link);
+    formData.append('image', updatedData.image);
+    formData.append('tags', updatedData.tags);
 
     try
     {
@@ -315,7 +323,7 @@ async function submitProjectUpdate()
                 "Content-Type": "application/json",
                 "Authorization": token,
             },
-            body: JSON.stringify(updatedData)
+            body: formData
         });
 
         if (!response.ok)
@@ -423,13 +431,13 @@ async function updatePost(id)
     //TODO: add photo
     currentEditPostId = id;
 
-    const post = [...document.querySelector('#posts-list li')].find(li => li.innerHTML.includes(id))
-    if (!project) return;
+    const post = [...document.querySelectorAll('#posts-list li')].find(li => li.innerHTML.includes(id))
+    if (!post) return;
 
     document.getElementById('edit-post-title').value = project.querySelector('h3')?.textContent || '';
     document.getElementById('edit-post-description').value = project.querySelector('p')?.textContent || '';
     document.getElementById('edit-post-link').value = project.querySelector('a')?.href || '';
-    document.getElementById('edit-post-tags').value = project.querySelector('p')[1]?.textContent || '';
+    document.getElementById('edit-post-tags').value = project.querySelectorAll('p')[1]?.textContent || '';
 
     document.getElementById('update-project-modal').classList.remove('hidden');
 }
@@ -440,19 +448,25 @@ async function submitPostUpdate()
         title: document.getElementById('edit-post-title').valuem,
         pub_date: document.getElementById('edit-post-pubDate').value,
         link: document.getElementById('edit-post-link').value,
-        thumbnail: document.getElementById('edit-post-thumbnail').value.split(',')
+        thumbnail: document.getElementById('edit-post-thumbnail').files[0]
         //TODO: add photo
     };
 
+    const formData = new FormData()
+    formData.append('title', updatedData.title);
+    formData.append('pub_date', updatedData.pub_date);
+    formData.append('link', updatedData.link);
+    formData.append('thumbnail', updatedData.thumbnail);
+
     try
     {
-        const response = await fetch(`${url}/projects/${currentEditPostId}`, {
+        const response = await fetch(`${url}/posts/${currentEditPostId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token,
             },
-            body: JSON.stringify(updatedData)
+            body: formData
         });
 
         if (!response.ok)
@@ -491,7 +505,7 @@ function confirmDelete()
 
 function closeModal()
 {
-    document.querySelector('.modal').forEach(modal =>
+    document.querySelectorAll('.modal').forEach(modal =>
     {
         modal.classList.add('hidden')
     });
