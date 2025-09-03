@@ -67,6 +67,7 @@ async function addProject()
         method: "POST",
         headers: {
             "Authorization": token,
+            "Content-Type": "multipart/form-data",
         },
         body: formData,
     });
@@ -109,6 +110,7 @@ async function addPost()
         method: "POST",
         headers: {
             "Authorization": token,
+            "Content-Type": "multipart/form-data",
         },
         body: formData,
     });
@@ -320,7 +322,7 @@ async function submitProjectUpdate()
         const response = await fetch(`${url}/projects/${currentEditProjectId}`, {
             method: "PATCH",
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
                 "Authorization": token,
             },
             body: formData
@@ -355,7 +357,7 @@ async function generatePostsList()
         <a href="${post.link}">Link</a>
         <img src="${post.thumbnail}" alt="${post.title}">
         <button onclick="showDeleteModal('${post._id}', 'post')">Delete</button>
-        <button onclick="updatePost(${post._id})">Patch</button>`;
+        <button onclick="updatePost('${post._id}')">Patch</button>`;
         postList.appendChild(postItem);
     }
 }
@@ -434,18 +436,18 @@ async function updatePost(id)
     const post = [...document.querySelectorAll('#posts-list li')].find(li => li.innerHTML.includes(id))
     if (!post) return;
 
-    document.getElementById('edit-post-title').value = project.querySelector('h3')?.textContent || '';
-    document.getElementById('edit-post-description').value = project.querySelector('p')?.textContent || '';
-    document.getElementById('edit-post-link').value = project.querySelector('a')?.href || '';
-    document.getElementById('edit-post-tags').value = project.querySelectorAll('p')[1]?.textContent || '';
+    document.getElementById('edit-post-title').value = post.querySelector('h3')?.textContent || '';
+    document.getElementById('edit-post-pubDate').value = post.querySelector('p')?.textContent || '';
+    document.getElementById('edit-post-link').value = post.querySelector('a')?.href || '';
 
-    document.getElementById('update-project-modal').classList.remove('hidden');
+
+    document.getElementById('update-post-modal').classList.remove('hidden');
 }
 
 async function submitPostUpdate()
 {
     const updatedData = {
-        title: document.getElementById('edit-post-title').valuem,
+        title: document.getElementById('edit-post-title').value,
         pub_date: document.getElementById('edit-post-pubDate').value,
         link: document.getElementById('edit-post-link').value,
         thumbnail: document.getElementById('edit-post-thumbnail').files[0]
@@ -463,7 +465,7 @@ async function submitPostUpdate()
         const response = await fetch(`${url}/posts/${currentEditPostId}`, {
             method: "PATCH",
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
                 "Authorization": token,
             },
             body: formData
@@ -471,11 +473,11 @@ async function submitPostUpdate()
 
         if (!response.ok)
         {
-            alert("Failed to update project")
+            alert("Failed to update post")
         } else
         {
-            alert("Project updated successfully")
-            await generateProjectsList()
+            alert("Post updated successfully")
+            await generatePostsList()
         }
     }
     catch (err)

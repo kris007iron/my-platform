@@ -181,6 +181,10 @@
         .cancel-btn:hover {
             background-color: #555;
         }
+
+        .hidden-list {
+            display: none;
+        }
     </style>
 </head>
 
@@ -192,18 +196,18 @@
         <button onclick="hash()">Login</button>
     </div>
 
-    <div class="hidden-list projects-list-div">
+    <div class="projects-list-div">
         <h2>Projekty</h2>
         <ul id="projects-list">
         </ul>
-        <button onclick="">Dodaj projekt</button>
+        <button onclick="document.getElementById('projects-form').style.display = 'block'">Dodaj projekt</button>
     </div>
 
-    <div class="hidden-list posts-list-div">
+    <div class="posts-list-div">
         <h2>Posty</h2>
         <ul id="posts-list">
         </ul>
-        <button onclick="">Dodaj post</button>
+        <button onclick="document.getElementById('posts-form').style.display = 'block'">Dodaj post</button>
     </div>
 
     <div class="hidden-form" id="projects-form">
@@ -258,8 +262,8 @@
         </div>
     </div>
 
-    <div>
-        <div>
+    <div id="update-post-modal" class="modal hidden">
+        <div class="modal-content">
             <h2>Edit Post</h2>
             <label for="edit-post-title">Tytuł</label>
             <input type="text" name="title" id="edit-post-title">
